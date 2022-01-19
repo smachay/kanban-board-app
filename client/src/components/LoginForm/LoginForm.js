@@ -71,8 +71,8 @@ function LoginForm(props) {
 
   const checkData = () => {
     loginData.map((obj) => {
-      if (obj.email == email) {
-        if (obj.password == password) {
+      if (obj.email === email) {
+        if (obj.password === password) {
           console.log("zalogowany");
           props.logIn(
             obj.employeeId,
@@ -81,7 +81,7 @@ function LoginForm(props) {
             obj.lastName,
             obj.email
           );
-          obj.jobId == 1
+          obj.jobId === 1
             ? navigate("/dashboard/projekty")
             : navigate("/dashboard/zespol");
         }
