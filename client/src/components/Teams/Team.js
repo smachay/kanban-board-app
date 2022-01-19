@@ -1,5 +1,5 @@
 import React from "react";
-import Employees from "../Employees/Employees";
+import ListOfEmployees from "../ListOfEmployees/ListOfEmployees";
 
 function createData(id, firstName, lastName, email, jobTitle) {
   return { id, firstName, lastName, email, jobTitle };
@@ -16,7 +16,7 @@ const Team = (props) => {
     get team members from db
     */
 
-  return <Employees user={props.user} employees={team} />;
+  return <ListOfEmployees user={props.user} employees={team} />;
 };
 
 export default Team;

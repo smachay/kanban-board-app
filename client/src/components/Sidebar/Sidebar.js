@@ -8,7 +8,6 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Paper,
   Typography,
 } from "@mui/material";
 import Logo from "../../images/logo3.png";

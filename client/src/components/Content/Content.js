@@ -1,7 +1,5 @@
-import { CssBaseline, Paper } from "@mui/material";
 import { Box } from "@mui/system";
 import Navbar from "../Navbar/Navbar";
-import { useState, useEffect, useRef } from "react";
 import Teams from "../Teams/Teams";
 import Team from "../Teams/Team";
 import Employees from "../Employees/Employees";

@@ -3,12 +3,10 @@ import {
   Button,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
   Typography,
-  TextField,
 } from "@mui/material";
 import React, { useState } from "react";
+import ListOfEmployees from "../ListOfEmployees/ListOfEmployees";
 
 export const AddEmployeeForm = (props) => {
   const handleClose = () => {
@@ -16,19 +14,23 @@ export const AddEmployeeForm = (props) => {
   };
 
   return (
-    <Dialog open={props.open}>
+    <Dialog maxWidth="xl" open={props.open}>
       <DialogContent
         sx={{
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          minWidth: 330,
           p: 4,
         }}
       >
         <Typography>
           <b>Wybierz pracownika</b>
         </Typography>
+        <ListOfEmployees
+          user={props.user}
+          view={1}
+          employees={props.employees}
+        />
       </DialogContent>
       <DialogActions
         sx={{

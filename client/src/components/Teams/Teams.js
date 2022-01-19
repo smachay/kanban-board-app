@@ -7,14 +7,9 @@ import {
   TableHead,
   TableRow,
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AddTeamForm } from "./AddTeamForm";
 import nextId from "react-id-generator";
 import { AddEmployeeForm } from "./AddEmployeeForm";
@@ -31,6 +26,33 @@ const teams = [
   {
     teamId: 3,
     name: "Zespół 3",
+  },
+];
+
+const employees = [
+  {
+    employeeId: 1,
+    jobId: 3,
+    firstName: "Franek",
+    lastName: "Bor",
+  },
+  {
+    employeeId: 2,
+    jobId: 3,
+    firstName: "Kamil",
+    lastName: "Wiśnia",
+  },
+  {
+    employeeId: 3,
+    jobId: 4,
+    firstName: "Piotrek",
+    lastName: "Brzoza",
+  },
+  {
+    employeeId: 4,
+    jobId: 4,
+    firstName: "Karol",
+    lastName: "Drwal",
   },
 ];
 
@@ -118,7 +140,9 @@ const Teams = (props) => {
       </TableContainer>
       <AddTeamForm open={openAddTeam} close={closeAddTeamForm.bind(this)} />
       <AddEmployeeForm
+        user={props.user}
         open={openAddEmployee}
+        employees={employees}
         close={closeAddEmployeeForm.bind(this)}
       />
     </div>
