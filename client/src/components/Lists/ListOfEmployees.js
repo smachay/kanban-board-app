@@ -25,6 +25,9 @@ const ListOfEmployees = (props) => {
   const [user] = useState(props.user);
 
   useEffect(() => {
+    if (typeof props.onChange === "undefined") {
+    }
+
     if (typeof props.employees !== "undefined") {
       setEmployees(props.employees);
     } else {

@@ -7,21 +7,26 @@ import {
   DialogTitle,
   Typography,
   TextField,
+  Select,
+  InputLabel,
+  MenuItem,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export const AddTeamForm = (props) => {
   const [name, setName] = useState(" ");
+  const [id, setId] = useState(0);
 
   const handleClose = () => {
-    props.close(name);
+    props.close(name, id);
+  };
+  const handleChange = (event) => {
+    setId(event.target.value);
   };
 
   const addTeam = () => {
-    const teamName = name;
-    //console.log(teamName);
     //passing new teams name to the parent component
-    handleClose(teamName);
+    handleClose();
   };
 
   return (
@@ -42,6 +47,14 @@ export const AddTeamForm = (props) => {
           onChange={(event) => setName(event.target.value)}
           fullWidth
         />
+        <InputLabel>Team leader</InputLabel>
+        <Select label="Team leader" onChange={handleChange}>
+          {props.teamLeaders.map((row) => (
+            <MenuItem value={row.employeeId}>
+              {row.firstName} {row.lastName}
+            </MenuItem>
+          ))}
+        </Select>
       </DialogContent>
       <DialogActions
         sx={{

@@ -20,14 +20,17 @@ const teams = [
   {
     teamId: 1,
     name: "Zespół 1",
+    teamLeaderId: null,
   },
   {
     teamId: 2,
     name: "Zespół 2",
+    teamLeaderId: null,
   },
   {
     teamId: 3,
     name: "Zespół 3",
+    teamLeaderId: null,
   },
 ];
 
@@ -76,7 +79,6 @@ const Teams = (props) => {
   const [user] = useState(props.user);
   const [teamsList, setTeamsList] = useState(teams);
   const [selectedTeamId, setSelectedTeamId] = useState(0);
-  //const [listOfIds, setListOfIds] = useState([]);
   const [openAddTeam, setOpenAddTeam] = useState(false);
   const [openAddEmployee, setOpenAddEmployee] = useState(false);
   const [openRemoveEmployee, setOpenRemoveEmployee] = useState(false);
@@ -91,10 +93,12 @@ const Teams = (props) => {
     setOpenAddTeam(true);
   };
 
-  const closeAddTeamForm = (teamName) => {
+  const closeAddTeamForm = (teamName, id) => {
     setOpenAddTeam(false);
     //call api
-    setTeamsList([...teamsList, { teamId: nextId(), name: teamName }]);
+    //dodałem id wybranego team leadera
+    console.log("nazwa: " + teamName + "\n" + "id: " + id);
+    setTeamsList([...teamsList, { teamId: nextId(), name: teamName, id }]);
   };
 
   const handleAddEmployeeForm = (id) => {
@@ -115,21 +119,15 @@ const Teams = (props) => {
   const removeEmployees = (teamId, ids) => {
     //usuwanie zaznaczonych pracowników z zespołu
     //call api
-    //console.log("Team id " + teamId);
-    //console.log("List of ids " + ids);
   };
 
   const addEmployees = (teamId, ids) => {
     //dodawanie zaznaczonych pracowników do zespołu
     //call api
-    //console.log("Team id " + teamId);
-    //console.log("List of ids " + ids);
   };
 
   const addMilestones = (ids) => {
     //call api
-    //console.log("Team id " + selectedTeamId);
-    //console.log("List of ids " + ids);
   };
 
   //get the list of employee ids that need to be added or removed from the team
@@ -199,7 +197,11 @@ const Teams = (props) => {
           </Box>
         </Table>
       </TableContainer>
-      <AddTeamForm open={openAddTeam} close={closeAddTeamForm.bind(this)} />
+      <AddTeamForm
+        open={openAddTeam}
+        teamLeaders={employees}
+        close={closeAddTeamForm.bind(this)}
+      />
       <AddEmployeeForm
         user={user}
         employees={employees}
