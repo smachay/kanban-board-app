@@ -57,7 +57,18 @@ const Employees = (props) => {
 
 
   const addEmployee = (user) => {
-    employees.push(user);
+    console.log("user", user)
+    fetch('http://localhost:3001/employees', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body:JSON.stringify({
+        "first_name": user.firstName,
+        "last_name": user.lastName,
+        "email": user.email,
+        "password": user.password,
+        "job_id": user.jobId
+   })
+  })
   };
 
   return (

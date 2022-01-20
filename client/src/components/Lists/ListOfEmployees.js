@@ -163,7 +163,7 @@ const ListOfEmployees = (props) => {
       </TableContainer>
       <AddEmployeeForm
         open={openAddEmployee}
-        addEmployee={addEmployee.bind(this)}
+        addEmployee={props.addEmployee.bind(this)}
         close={handleAddEmployee.bind(this)}
       />
     </div>

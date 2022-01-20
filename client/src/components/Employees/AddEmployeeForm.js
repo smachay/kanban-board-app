@@ -41,7 +41,7 @@ export const AddEmployeeForm = (props) => {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        password: password,
+        password: password1,
         jobId: job,
       });
     } else {
