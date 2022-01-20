@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useEffect, useState } from "react";
 import ListOfEmployees from "../Lists/ListOfEmployees";
 
 /*const employees = [
@@ -70,10 +70,14 @@ const Employees = (props) => {
    })
   })
   };
+  const removeEmployee = (id) => {
+    console.log(id);
+  };
 
   return (
     <ListOfEmployees
       addEmployee={addEmployee.bind(this)}
+      removeEmployee={removeEmployee.bind(this)}
       employees={employees}
       user={props.user}
     />
