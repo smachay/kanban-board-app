@@ -66,27 +66,53 @@ const btnStyle = {
 function LoginForm(props) {
   const [email, setEmail] = useState(" ");
   const [password, setPassword] = useState(" ");
+  //const [user] = useState({employeeId, jobId, firstName, lastName, email});
 
   const navigate = useNavigate();
 
   const checkData = () => {
-    loginData.map((obj) => {
-      if (obj.email === email) {
-        if (obj.password === password) {
-          console.log("zalogowany");
-          props.logIn(
-            obj.employeeId,
-            obj.jobId,
-            obj.firstName,
-            obj.lastName,
-            obj.email
-          );
-          obj.jobId === 1
-            ? navigate("/dashboard/projekty")
-            : navigate("/dashboard/zespol");
-        }
-      }
-    });
+    fetch('http://localhost:3001/auth', {
+      method: 'post',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+           "email": email,
+           "password": password
+      })
+   }).then((response)=>{
+    if(response.status == 400){
+      return -1;
+    }
+    return response.json()}).then(json=>{
+    if(json == -1) return -1;
+    console.log(json);
+    fetch('http://localhost:3001/employees/' + json.employee_id, {
+      method: 'get',
+      headers: {'Content-Type':'application/json'}
+   }).then(resp=>resp.json()).then(employees=>{
+     console.log(employees[0])
+    return employees[0];
+  }).then(employee=>{
+    let obj = {
+      employeeId: employee.employee_id,
+      jobId: employee.job_id,
+      //teamId: employee.team_is,
+      firstName: employee.first_name,
+      lastName: employee.last_name,
+      email: employee.email
+    };
+
+    props.logIn(
+      obj.employeeId,
+      obj.jobId,
+     // obj.teamId,
+      obj.firstName,
+      obj.lastName,
+      obj.email
+    );
+    obj.jobId === 1
+      ? navigate("/dashboard/projekty")
+      : navigate("/dashboard/zespol");
+   });})
   };
 
   return (
