@@ -1,5 +1,5 @@
 import React from "react";
-import ListOfEmployees from "../ListOfEmployees/ListOfEmployees";
+import ListOfEmployees from "../Lists/ListOfEmployees";
 
 const employees = [
   {

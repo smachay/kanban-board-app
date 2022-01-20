@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import ListOfEmployees from "../ListOfEmployees/ListOfEmployees";
+=======
+import React from "react";
+import ListOfEmployees from "../Lists/ListOfEmployees";
+>>>>>>> main
 
 function createData(id, firstName, lastName, email, jobTitle) {
   return { id, firstName, lastName, email, jobTitle };

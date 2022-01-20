@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import ListOfEmployees from "../ListOfEmployees/ListOfEmployees";
+import ListOfEmployees from "../Lists/ListOfEmployees";
 
 export const AddEmployeeForm = (props) => {
   const [listOfIds, setListOfIds] = useState([]);
@@ -15,13 +15,21 @@ export const AddEmployeeForm = (props) => {
     props.close();
   };
 
+<<<<<<< HEAD
   //recives id list from list component and sends it to parent component
+=======
+  //receives id list from list component and sends it to parent component
+>>>>>>> main
   const handleChildCallback = (ids) => {
     setListOfIds(ids);
   };
 
   const handleParentCallback = () => {
+<<<<<<< HEAD
     props.parentCallback(listOfIds);
+=======
+    props.parentCallback(listOfIds, "a");
+>>>>>>> main
     handleClose();
   };
 

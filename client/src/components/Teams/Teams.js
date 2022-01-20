@@ -14,7 +14,10 @@ import { AddTeamForm } from "./AddTeamForm";
 import nextId from "react-id-generator";
 import { AddEmployeeForm } from "./AddEmployeeForm";
 import RemoveEmployeeForm from "./RemoveEmployeeForm";
+<<<<<<< HEAD
 import AddMilestoneForm from "./AddMilestonesForm";
+=======
+>>>>>>> main
 import AddMilestonesForm from "./AddMilestonesForm";
 
 const teams = [
@@ -58,33 +61,60 @@ const employees = [
     lastName: "Drwal",
   },
 ];
+<<<<<<< HEAD
+=======
+
+const milestones = [
+  {
+    milestoneId: 1,
+    name: "Dodanie przycisków na stronie głównej",
+  },
+  {
+    milestoneId: 2,
+    name: "Strona klienta",
+  },
+];
+>>>>>>> main
 /*
   Do <AddEmployeeForm> musisz podpiąć array z użytkownikami którzy nie mająprzypisanego zespołu
   Do <RemoveEmployeeForm> array członków zespołu
 */
 const Teams = (props) => {
+  const [user] = useState(props.user);
   const [teamsList, setTeamsList] = useState(teams);
+<<<<<<< HEAD
   const [listOfIds, setListOfIds] = useState([]);
+=======
+  const [selectedTeamId, setSelectedTeamId] = useState(0);
+  //const [listOfIds, setListOfIds] = useState([]);
+>>>>>>> main
   const [openAddTeam, setOpenAddTeam] = useState(false);
   const [openAddEmployee, setOpenAddEmployee] = useState(false);
   const [openRemoveEmployee, setOpenRemoveEmployee] = useState(false);
   const [openMilestonesForm, setOpenMilestonesForm] = useState(false);
+<<<<<<< HEAD
   useEffect(() => {
     //console.log(listOfIds);
   }, [listOfIds]);
+=======
+>>>>>>> main
 
   const removeTeam = (id) => {
     setTeamsList(teamsList.filter((team) => team.teamId !== id));
     //call api
   };
 
-  const openAddTeamForm = () => {
+  const openAddTeamForm = (id) => {
     setOpenAddTeam(true);
   };
 
   const closeAddTeamForm = (teamName) => {
     setOpenAddTeam(false);
+    //call api
+    setTeamsList([...teamsList, { teamId: nextId(), name: teamName }]);
+  };
 
+<<<<<<< HEAD
     //call api
     setTeamsList([...teamsList, { teamId: nextId(), name: teamName }]);
   };
@@ -107,6 +137,50 @@ const Teams = (props) => {
     setListOfIds(ids);
 
     //call api
+=======
+  const handleAddEmployeeForm = (id) => {
+    setOpenAddEmployee(!openAddEmployee);
+    setSelectedTeamId(id);
+  };
+
+  const handleRemoveEmployeeForm = (id) => {
+    setOpenRemoveEmployee(!openRemoveEmployee);
+    setSelectedTeamId(id);
+  };
+
+  const handleMilestonesForm = (id) => {
+    setOpenMilestonesForm(!openMilestonesForm);
+    setSelectedTeamId(id);
+  };
+
+  const removeEmployees = (teamId, ids) => {
+    //usuwanie zaznaczonych pracowników z zespołu
+    //call api
+    //console.log("Team id " + teamId);
+    //console.log("List of ids " + ids);
+  };
+
+  const addEmployees = (teamId, ids) => {
+    //dodawanie zaznaczonych pracowników do zespołu
+    //call api
+    //console.log("Team id " + teamId);
+    //console.log("List of ids " + ids);
+  };
+
+  const addMilestones = (ids) => {
+    //call api
+    //console.log("Team id " + selectedTeamId);
+    //console.log("List of ids " + ids);
+  };
+
+  //get the list of employee ids that need to be added or removed from the team
+  const getEmployeeIds = (ids, action) => {
+    if (action === "r") {
+      removeEmployees(selectedTeamId, ids);
+    } else if (action === "a") {
+      addEmployees(selectedTeamId, ids);
+    }
+>>>>>>> main
   };
 
   return (
@@ -139,6 +213,7 @@ const Teams = (props) => {
                   </Button>
                 </TableCell>
                 <TableCell align="left">
+<<<<<<< HEAD
                   <Button onClick={handleAddEmployeeForm.bind(this)}>
                     Dodaj pracownika
                   </Button>
@@ -150,6 +225,23 @@ const Teams = (props) => {
                 </TableCell>
                 <TableCell align="left">
                   <Button onClick={handleMilestonesForm.bind(this)}>
+=======
+                  <Button
+                    onClick={handleAddEmployeeForm.bind(this, row.teamId)}
+                  >
+                    Dodaj pracowników
+                  </Button>
+                </TableCell>
+                <TableCell align="left">
+                  <Button
+                    onClick={handleRemoveEmployeeForm.bind(this, row.teamId)}
+                  >
+                    Usuń pracowników
+                  </Button>
+                </TableCell>
+                <TableCell align="left">
+                  <Button onClick={handleMilestonesForm.bind(this, row.teamId)}>
+>>>>>>> main
                     Przypisz kamienie milowe
                   </Button>
                 </TableCell>
@@ -165,21 +257,35 @@ const Teams = (props) => {
       </TableContainer>
       <AddTeamForm open={openAddTeam} close={closeAddTeamForm.bind(this)} />
       <AddEmployeeForm
+<<<<<<< HEAD
         user={props.user}
+=======
+        user={user}
+>>>>>>> main
         employees={employees}
         parentCallback={getEmployeeIds}
         open={openAddEmployee}
         close={handleAddEmployeeForm.bind(this)}
       />
       <RemoveEmployeeForm
+<<<<<<< HEAD
         user={props.user}
+=======
+        user={user}
+>>>>>>> main
         employees={employees}
         parentCallback={getEmployeeIds}
         open={openRemoveEmployee}
         close={handleRemoveEmployeeForm.bind(this)}
       />
       <AddMilestonesForm
+<<<<<<< HEAD
         parentCallback={getEmployeeIds}
+=======
+        user={user}
+        milestones={milestones}
+        parentCallback={addMilestones}
+>>>>>>> main
         open={openMilestonesForm}
         close={handleMilestonesForm.bind(this)}
       />
