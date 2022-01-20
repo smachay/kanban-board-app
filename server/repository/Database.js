@@ -35,6 +35,15 @@ class Database {
         });
     }
 
+    deleteEmployee(employee_id, callback){
+        let query = 'DELETE FROM employees WHERE employee_id = ' + employee_id;
+        return this.connection.query(query, function (error, results, fields) {
+            if (error) console.log(error);
+            console.log(callback);
+            callback(results);
+        });
+    }
+
     getJobs(callback) {
         this.connection.query('SELECT * FROM jobs', function (error, results, fields) {
             if (error) console.log(error);

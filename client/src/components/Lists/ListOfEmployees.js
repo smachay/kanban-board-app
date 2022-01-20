@@ -97,6 +97,7 @@ const ListOfEmployees = (props) => {
   const addEmployee = (user) => {
     handleAddEmployee();
     employees.push(user);
+    props.addEmployee(user);
   };
 
   const checkboxChange = (id) => {
@@ -178,7 +179,7 @@ const ListOfEmployees = (props) => {
       </TableContainer>
       <AddEmployeeForm
         open={openAddEmployee}
-        addEmployee={props.addEmployee.bind(this)}
+        addEmployee={addEmployee.bind(this)}
         close={handleAddEmployee.bind(this)}
       />
     </div>

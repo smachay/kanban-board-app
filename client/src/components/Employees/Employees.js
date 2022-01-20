@@ -36,25 +36,28 @@ const Employees = (props) => {
   const [employees, setEmployees] = useState([]);
 
   useEffect(()=>{
-      fetch('http://localhost:3001/employees/', {
-        method: 'get',
-        headers: {'Content-Type':'application/json'}
-     }).then(resp=>resp.json()).then(employeesList=>{
-       let t = [];
-       employeesList.forEach(employee=>{
-          t.push({
-            employeeId: employee.employee_id,
-            jobId: employee.job_id,
-            firstName: employee.first_name,
-            lastName: employee.last_name,
-            email: employee.email
-          })
-       })
-       console.log(t);
-       setEmployees(t);
-     })
+    loadEmployees();
   },[]);
 
+  const loadEmployees = ()=>{
+    fetch('http://localhost:3001/employees/', {
+      method: 'get',
+      headers: {'Content-Type':'application/json'}
+   }).then(resp=>resp.json()).then(employeesList=>{
+     let t = [];
+     employeesList.forEach(employee=>{
+        t.push({
+          employeeId: employee.employee_id,
+          jobId: employee.job_id,
+          firstName: employee.first_name,
+          lastName: employee.last_name,
+          email: employee.email
+        })
+     })
+     console.log(t);
+     setEmployees(t);
+   })
+  }
 
   const addEmployee = (user) => {
     console.log("user", user)
@@ -71,7 +74,14 @@ const Employees = (props) => {
   })
   };
   const removeEmployee = (id) => {
-    console.log(id);
+    fetch('http://localhost:3001/employees', {
+      method: 'DELETE',
+      headers: {'Content-Type':'application/json'},
+      body:JSON.stringify({
+        "employee_id": id,
+   })
+  }).then(loadEmployees())
+  
   };
 
   return (

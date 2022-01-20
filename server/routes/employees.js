@@ -57,4 +57,11 @@ router.put('/', (req, res) => {
   database.updateEmployee(employee_id, job_id, team_id, resp => res.send(resp));
 })
 
+router.delete('/', (req, res) => {
+  const {
+    employee_id,
+  } = req.body;
+  database.deleteEmployee(employee_id, resp=>res.send(resp));
+})
+
 module.exports = router;
