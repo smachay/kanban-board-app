@@ -15,20 +15,24 @@ import React, { useEffect, useState } from "react";
 /*
 Reusable component for displaying list of employees
 in:  employees - array of employees
-out: updated list of employees
+out: updated list of employees or list of employees ids 
 */
 const ListOfEmployees = (props) => {
   const [employees, setEmployees] = useState([]);
+  const [checkedEmployees, setCheckedEmployees] = useState([]);
   const [view, setView] = useState();
 
   const [user] = useState(props.user);
+
+  useEffect(() => {});
+
   useEffect(() => {
     if (typeof props.employees !== "undefined") {
       setEmployees(props.employees);
     } else {
       setEmployees([
         {
-          id: " ",
+          employeeId: " ",
           firstName: " ",
           lastName: " ",
           email: " ",
@@ -43,29 +47,38 @@ const ListOfEmployees = (props) => {
     } else {
       setView(0);
     }
-  });
+
+    props.onChange(checkedEmployees);
+  }, [checkedEmployees]);
 
   const setJobTitle = (id) => {
     switch (id) {
       case 1:
         return "Manager";
-        break;
+
       case 2:
         return "Team leader";
-        break;
+
       case 3:
         return "Programista";
-        break;
+
       case 4:
         return "Tester";
-        break;
 
       default:
         return "";
-        break;
     }
   };
 
+  const checkboxChange = (id) => {
+    if (checkedEmployees.includes(id) === true) {
+      setCheckedEmployees(checkedEmployees.filter((item) => item !== id));
+    } else {
+      setCheckedEmployees([...checkedEmployees, id]);
+    }
+  };
+
+  //const setCheckedEmployees = (event) => {};
   return (
     <TableContainer component={Paper} sx={{ mt: 2 }}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -88,7 +101,7 @@ const ListOfEmployees = (props) => {
         <TableBody>
           {employees.map((row) => (
             <TableRow
-              key={row.id}
+              key={row.employeeId}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell scope="row">{row.firstName}</TableCell>
@@ -102,7 +115,9 @@ const ListOfEmployees = (props) => {
                 <TableCell align="left">{row.email}</TableCell>
               ) : (
                 <TableCell align="left">
-                  <Checkbox />
+                  <Checkbox
+                    onChange={checkboxChange.bind(this, row.employeeId)}
+                  />
                 </TableCell>
               )}
             </TableRow>
@@ -110,7 +125,7 @@ const ListOfEmployees = (props) => {
         </TableBody>
         <Box sx={{ m: 1 }}>
           {user.jobId === 1 && view !== 1 ? (
-            <Button>Dodaj nowego pracownika</Button>
+            <Button>Dodaj</Button>
           ) : (
             <div></div>
           )}
