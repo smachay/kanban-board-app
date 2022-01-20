@@ -174,8 +174,8 @@ class Database {
         });
     }
 
-    createTeam(name, callback) {
-        this.connection.query("INSERT INTO teams(team_leader_id, name) values (NULL, '" + name + "')", function (error, results, fields) {
+    createTeam(name, team_leader_id, callback) {
+        this.connection.query("INSERT INTO teams(team_leader_id, name) values (" + team_leader_id + ", '" + name + "')", function (error, results, fields) {
             if (error) console.log(error);
             callback(results);
         });

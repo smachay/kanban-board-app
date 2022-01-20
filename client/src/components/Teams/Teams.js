@@ -15,7 +15,7 @@ import nextId from "react-id-generator";
 import { AddEmployeeForm } from "./AddEmployeeForm";
 import RemoveEmployeeForm from "./RemoveEmployeeForm";
 import AddMilestonesForm from "./AddMilestonesForm";
-
+/*
 const teams = [
   {
     teamId: 1,
@@ -32,7 +32,7 @@ const teams = [
     name: "Zespół 3",
     teamLeaderId: null,
   },
-];
+];*/
 
 
 /*
@@ -41,7 +41,7 @@ const teams = [
 */
 const Teams = (props) => {
   const [user] = useState(props.user);
-  const [teamsList, setTeamsList] = useState(teams);
+  const [teamsList, setTeamsList] = useState([]);
   const [selectedTeamId, setSelectedTeamId] = useState(0);
   const [openAddTeam, setOpenAddTeam] = useState(false);
   const [openAddEmployee, setOpenAddEmployee] = useState(false);
@@ -56,10 +56,12 @@ const Teams = (props) => {
 
   useEffect(()=>{
     reloadEmployees();
-
     reloadMilestones();
+    realoadTeams();
+  },[]);
 
-   fetch('http://localhost:3001/teams/', {
+  const realoadTeams = ()=>{
+    fetch('http://localhost:3001/teams/', {
       method: 'get',
       headers: {'Content-Type':'application/json'}
    }).then(resp=>resp.json()).then(employeesList=>{
@@ -72,8 +74,7 @@ const Teams = (props) => {
      })
      setTeamsList(t);
    })
-
-  },[]);
+  }
 
   const reloadEmployees = ()=>{
     fetch('http://localhost:3001/employees/', {
@@ -124,8 +125,15 @@ const Teams = (props) => {
     setOpenAddTeam(false);
     //call api
     //dodałem id wybranego team leadera
-    console.log("nazwa: " + teamName + "\n" + "id: " + id);
-    setTeamsList([...teamsList, { teamId: nextId(), name: teamName, id }]);
+    fetch('http://localhost:3001/teams', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body:JSON.stringify({
+        "name":teamName,
+        "team_leader_id":id})
+   }).then(()=>{
+     realoadTeams();
+   })
   };
 
   const handleAddEmployeeForm = (id) => {
@@ -260,7 +268,7 @@ const Teams = (props) => {
       </TableContainer>
       <AddTeamForm
         open={openAddTeam}
-        teamLeaders={employees}
+        teamLeaders={employees.filter(e=>e.jobId == 2)}
         close={closeAddTeamForm.bind(this)}
       />
       <AddEmployeeForm

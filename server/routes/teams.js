@@ -11,9 +11,10 @@ router.get('/', function (req, res) {
 
 router.post('/', (req, res)=>{
   const {
-    name
+    name,
+    team_leader_id
   } = req.body;
-  database.createTeam(name, resp=>res.send(resp));
+  database.createTeam(name, team_leader_id, resp=>res.send(resp));
 })
 
 module.exports = router;

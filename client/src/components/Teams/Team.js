@@ -36,18 +36,12 @@ const Team = (props) => {
     */
   const emptyCallback = () => {};
 
-<<<<<<< HEAD
-  const emptyCallback = ()=>{};
-  return <ListOfEmployees onChange = {emptyCallback} user={props.user} employees={team} />;
-=======
   return (
     <ListOfEmployees
-      onChange={emptyCallback}
       user={props.user}
       employees={team}
     />
   );
->>>>>>> main
 };
 
 export default Team;

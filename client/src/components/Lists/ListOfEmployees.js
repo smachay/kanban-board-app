@@ -68,10 +68,6 @@ const ListOfEmployees = (props) => {
     
     if(props.onChange !== undefined) props.onChange(checkedEmployees);
 
-<<<<<<< HEAD
-=======
-    if (props.onChange !== undefined) props.onChange(checkedEmployees);
->>>>>>> main
   }, [checkedEmployees]);
 
   const setJobTitle = (id) => {
