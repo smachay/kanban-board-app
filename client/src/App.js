@@ -26,15 +26,17 @@ function App() {
     firstName: " ",
     lastName: " ",
     email: " ",
+    teamId: 0
   });
 
-  const logIn = (employeeId, jobId, firstName, lastName, email) => {
+  const logIn = (employeeId, jobId, firstName, lastName, email, teamId) => {
     setUser({
       id: employeeId,
       jobId: jobId,
       firstName: firstName,
       lastName: lastName,
       email: email,
+      teamId: teamId
     });
   };
 

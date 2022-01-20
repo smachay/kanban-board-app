@@ -119,7 +119,8 @@ class Database {
     }
 
     addProject(name, callback) {
-        this.connection.query("INSERT INTO projects (name, start_date) VALUES ('" + name + "', '" + (new Date()).toISOString().substring(0, 10) + "')",
+        console.log("INSERT INTO projects (name, start_date) VALUES ('" + name + "', '" + (new Date()).toISOString().substring(0, 10) + "')");
+        this.connection.query("INSERT INTO projects (name, start_date, status_id) VALUES ('" + name + "', '" + (new Date()).toISOString().substring(0, 10) + "', 1)",
             function (error, results) {
                 callback(results);
             })

@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
 import { BrowserRouter, Routes } from "react-router-dom";
 import ListOfMilestones from "../Lists/ListOfMilestones";
 import { AddProjectForm } from "./AddProjectForm";
@@ -119,10 +118,18 @@ const Projects = (props) => {
   };
 
   const addProject = (name) => {
-    projects.push({
-      projectId: null,
-      name: name,
-    });
+    console.log("project", name)
+    fetch('http://localhost:3001/projects', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body:JSON.stringify({
+        "name":name,
+   })
+  }).then(()=>{
+    loadProjects();
+  });
+
+
   };
 
   return (

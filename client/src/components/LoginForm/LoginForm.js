@@ -97,7 +97,8 @@ function LoginForm(props) {
       jobId: employee.job_id,
       firstName: employee.first_name,
       lastName: employee.last_name,
-      email: employee.email
+      email: employee.email,
+      teamId: employee.team_id,
     };
 
     props.logIn(
@@ -105,7 +106,8 @@ function LoginForm(props) {
       obj.jobId,
       obj.firstName,
       obj.lastName,
-      obj.email
+      obj.email,
+      obj.teamId
     );
     obj.jobId === 1
       ? navigate("/dashboard/projekty")

@@ -19,7 +19,7 @@ import { AddMilestoneForm } from "../Projects/AddMilestoneForm";
   out: updated list of employees or list of employees ids 
   */
 const ListOfMilestones = (props) => {
-  const [milestones, setEmployees] = useState([]);
+  const [milestones, setMilestones] = useState([]);
   const [checkedMilestones, setCheckedMilestones] = useState([]);
   const [view, setView] = useState();
   const [openAddMilestone, setOpenAddMilestone] = useState(false);
@@ -27,10 +27,16 @@ const ListOfMilestones = (props) => {
   const [user] = useState(props.user);
 
   useEffect(() => {
+    console.log("user", user)
     if (typeof props.milestones !== "undefined") {
-      setEmployees(props.milestones);
+      if(user.jobId != 1){
+        setMilestones(props.milestones.filter(m=>m.teamId == user.teamId));
+      }else{
+        setMilestones(props.milestones)
+      }
+      
     } else {
-      setEmployees([
+      setMilestones([
         {
           milestoneId: " ",
           name: " ",
