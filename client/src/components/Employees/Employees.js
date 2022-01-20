@@ -32,7 +32,17 @@ const employees = [
   },
 ];
 const Employees = (props) => {
-  return <ListOfEmployees employees={employees} user={props.user} />;
+  const addEmployee = (user) => {
+    employees.push(user);
+  };
+
+  return (
+    <ListOfEmployees
+      addEmployee={addEmployee.bind(this)}
+      employees={employees}
+      user={props.user}
+    />
+  );
 };
 
 export default Employees;
