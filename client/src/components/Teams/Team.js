@@ -35,7 +35,8 @@ const Team = (props) => {
     get team members from db
     */
 
-  return <ListOfEmployees user={props.user} employees={team} />;
+  const emptyCallback = ()=>{};
+  return <ListOfEmployees onChange = {emptyCallback} user={props.user} employees={team} />;
 };
 
 export default Team;

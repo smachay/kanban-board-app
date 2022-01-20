@@ -95,7 +95,6 @@ function LoginForm(props) {
     let obj = {
       employeeId: employee.employee_id,
       jobId: employee.job_id,
-      //teamId: employee.team_is,
       firstName: employee.first_name,
       lastName: employee.last_name,
       email: employee.email
@@ -104,7 +103,6 @@ function LoginForm(props) {
     props.logIn(
       obj.employeeId,
       obj.jobId,
-     // obj.teamId,
       obj.firstName,
       obj.lastName,
       obj.email

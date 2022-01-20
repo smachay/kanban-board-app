@@ -41,6 +41,23 @@ const ListOfEmployees = (props) => {
         },
       ]);
     }
+  }, [props.employees]);
+
+  useEffect(() => {
+    if (typeof props.employees !== "undefined") {
+      setEmployees(props.employees);
+    } else {
+      setEmployees([
+        {
+          employeeId: " ",
+          firstName: " ",
+          lastName: " ",
+          email: " ",
+          jobId: " ",
+          jobTitle: " ",
+        },
+      ]);
+    }
 
     if (typeof props.view !== "undefined") {
       setView(props.view);
