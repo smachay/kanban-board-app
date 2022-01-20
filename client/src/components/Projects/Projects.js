@@ -40,6 +40,8 @@ const Projects = (props) => {
   const [openMilestones, setOpenMilestones] = useState(false);
   const [projectId, setProjectId] = useState(null);
 
+  const [milestones, setMilestones] = useState([]);
+
   const showMilestones = (projectId) => {
     setProjectId(projectId);
     setOpenMilestones(!openMilestones);
@@ -48,37 +50,65 @@ const Projects = (props) => {
 
 
   useEffect(() => {
-      let url
-      if(props.user.jobId === 1){
-          url = 'http://localhost:3001/projects'
-      }else{
-          url = 'http://localhost:3001/milestones?userId=' + props.user.id
-      }
-      fetch(url, {
-        method: 'get',
-        headers: {'Content-Type':'application/json'}
-     }).then(resp=>resp.json()).then(
-       x=>{
-         let t = [];
-         x.forEach(user => {
-           console.log(user);
-        t.push(createData(user.project_id, user.project_name))
-      })
-      setProjects(t);
-    }
-      )
+    loadProjects();
+    loadMilestones();
     }, []);
 
 
+  const loadMilestones = ()=>{
+    fetch('http://localhost:3001/milestones', {
+      method: 'get',
+      headers: {'Content-Type':'application/json'}
+   }).then(resp=>resp.json()).then(result=>{
+     let x = [];
+     result.forEach(element => {
+       x.push({
+        milestoneId: element.milestone_id,
+        name: element.name,
+        teamId: element.team_id,
+        teamName: element.team_name,
+        projectId: element.project_id,
+       })
+     });
+     setMilestones(x);
+   })
+  }
+
+  const loadProjects = ()=>{
+    let url
+    if(props.user.jobId === 1){
+        url = 'http://localhost:3001/projects'
+    }else{
+        url = 'http://localhost:3001/milestones?userId=' + props.user.id
+    }
+    fetch(url, {
+      method: 'get',
+      headers: {'Content-Type':'application/json'}
+   }).then(resp=>resp.json()).then(
+     x=>{
+       let t = [];
+       x.forEach(user => {
+         console.log(user);
+      t.push(createData(user.project_id, user.project_name))
+    })
+    setProjects(t);
+  }
+    )
+  }
+
   const addMilestone = (name) => {
-    milestones.push({
-      milestoneId: null,
-      name: name,
-      teamName: null,
-      projectId: projectId,
-    });
-    console.log(milestones);
-  };
+
+    fetch('http://localhost:3001/milestones', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body:JSON.stringify({
+        "name":name,
+        "project_id": projectId
+   })
+  }).then(()=>{
+    loadMilestones();
+  });
+}
 
   return (
     <div>
@@ -87,7 +117,7 @@ const Projects = (props) => {
           update={addMilestone}
           user={props.user}
           view={2}
-          milestones={milestones}
+          milestones={milestones.filter(m=>m.projectId == projectId)}
         />
       ) : (
         <TableContainer component={Paper}>

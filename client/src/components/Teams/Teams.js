@@ -57,10 +57,10 @@ const Teams = (props) => {
   useEffect(()=>{
     reloadEmployees();
     reloadMilestones();
-    realoadTeams();
+    reloadTeams();
   },[]);
 
-  const realoadTeams = ()=>{
+  const reloadTeams = ()=>{
     fetch('http://localhost:3001/teams/', {
       method: 'get',
       headers: {'Content-Type':'application/json'}
@@ -132,7 +132,7 @@ const Teams = (props) => {
         "name":teamName,
         "team_leader_id":id})
    }).then(()=>{
-     realoadTeams();
+     reloadTeams();
    })
   };
 

@@ -40,9 +40,10 @@ router.get('/:milestoneId(\\d+)/status', function (req, res) {
 
 router.post('/', (req, res) => {
   const {
-    name
+    name,
+    project_id
   } = req.body;
-  database.addMilestone(name, resp => res.send(resp));
+  database.addMilestone(name, project_id, resp => res.send(resp));
 })
 
 router.put('/', (req, res) => {

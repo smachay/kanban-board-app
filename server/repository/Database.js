@@ -71,14 +71,14 @@ class Database {
     }
 
     getAllMilestones(callback) {
-        this.connection.query('SELECT m.*, p.name AS "project_name" FROM milestones m INNER JOIN projects p ON m.project_id = p.project_id', function (error, results, fields) {
+        this.connection.query('SELECT m.*, p.name AS "project_name", t.name AS "team_name" FROM milestones m LEFT JOIN projects p ON m.project_id = p.project_id LEFT JOIN teams t ON t.team_id = m.team_id', function (error, results, fields) {
             if (error) console.log(error);
             callback(results);
         });
     }
 
     getMilestones(teamId, callback) {
-        this.connection.query('SELECT m.*, p.name AS "project_name" FROM milestones m INNER JOIN projects p ON m.project_id = p.project_id WHERE m.team_id=' + teamId, function (error, results, fields) {
+        this.connection.query('SELECT m.*, p.name AS "project_name" FROM milestones m LEFT JOIN projects p ON m.project_id = p.project_id WHERE m.team_id=' + teamId, function (error, results, fields) {
             if (error) console.log(error);
             callback(results);
         });
@@ -92,7 +92,8 @@ class Database {
     }
 
     addMilestone(name, projectId, callback) {
-        this.connection.query("INSERT INTO milestones (name, project_id) VALUES ('" + name + "', '" + projectId + "')",
+        console.log("INSERT INTO milestones (name, project_id) VALUES ('" + name + "', " + projectId + ")")
+        this.connection.query("INSERT INTO milestones (name, project_id) VALUES ('" + name + "', " + projectId + ")",
             function (error, results) {
                 callback(results);
             })
