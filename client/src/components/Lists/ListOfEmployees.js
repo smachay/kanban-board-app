@@ -24,6 +24,23 @@ const ListOfEmployees = (props) => {
 
   const [user] = useState(props.user);
 
+  useEffect(()=>{
+    if (typeof props.employees !== "undefined") {
+      setEmployees(props.employees);
+    } else {
+      setEmployees([
+        {
+          employeeId: " ",
+          firstName: " ",
+          lastName: " ",
+          email: " ",
+          jobId: " ",
+          jobTitle: " ",
+        },
+      ]);
+    }
+  }, [props.employees])
+
   useEffect(() => {
     if (typeof props.employees !== "undefined") {
       setEmployees(props.employees);
@@ -45,8 +62,9 @@ const ListOfEmployees = (props) => {
     } else {
       setView(0);
     }
+    
+    if(props.onChange !== undefined) props.onChange(checkedEmployees);
 
-    props.onChange(checkedEmployees);
   }, [checkedEmployees]);
 
   const setJobTitle = (id) => {

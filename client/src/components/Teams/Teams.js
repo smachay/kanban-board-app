@@ -14,10 +14,6 @@ import { AddTeamForm } from "./AddTeamForm";
 import nextId from "react-id-generator";
 import { AddEmployeeForm } from "./AddEmployeeForm";
 import RemoveEmployeeForm from "./RemoveEmployeeForm";
-<<<<<<< HEAD
-import AddMilestoneForm from "./AddMilestonesForm";
-=======
->>>>>>> main
 import AddMilestonesForm from "./AddMilestonesForm";
 
 const teams = [
@@ -35,46 +31,7 @@ const teams = [
   },
 ];
 
-const employees = [
-  {
-    employeeId: 1,
-    jobId: 3,
-    firstName: "Franek",
-    lastName: "Bor",
-  },
-  {
-    employeeId: 2,
-    jobId: 3,
-    firstName: "Kamil",
-    lastName: "Wiśnia",
-  },
-  {
-    employeeId: 3,
-    jobId: 4,
-    firstName: "Piotrek",
-    lastName: "Brzoza",
-  },
-  {
-    employeeId: 4,
-    jobId: 4,
-    firstName: "Karol",
-    lastName: "Drwal",
-  },
-];
-<<<<<<< HEAD
-=======
 
-const milestones = [
-  {
-    milestoneId: 1,
-    name: "Dodanie przycisków na stronie głównej",
-  },
-  {
-    milestoneId: 2,
-    name: "Strona klienta",
-  },
-];
->>>>>>> main
 /*
   Do <AddEmployeeForm> musisz podpiąć array z użytkownikami którzy nie mająprzypisanego zespołu
   Do <RemoveEmployeeForm> array członków zespołu
@@ -82,22 +39,75 @@ const milestones = [
 const Teams = (props) => {
   const [user] = useState(props.user);
   const [teamsList, setTeamsList] = useState(teams);
-<<<<<<< HEAD
-  const [listOfIds, setListOfIds] = useState([]);
-=======
   const [selectedTeamId, setSelectedTeamId] = useState(0);
   //const [listOfIds, setListOfIds] = useState([]);
->>>>>>> main
   const [openAddTeam, setOpenAddTeam] = useState(false);
   const [openAddEmployee, setOpenAddEmployee] = useState(false);
   const [openRemoveEmployee, setOpenRemoveEmployee] = useState(false);
   const [openMilestonesForm, setOpenMilestonesForm] = useState(false);
-<<<<<<< HEAD
-  useEffect(() => {
-    //console.log(listOfIds);
-  }, [listOfIds]);
-=======
->>>>>>> main
+
+  const [employees, setEmployees] = useState([]);
+  const [selectedEmployees, setSelectedEmployees] = useState([]);
+  const [milestones, setMilestones] = useState([]);
+  const [freeMilestones, setFreeMilestones] = useState([]);
+  //const [teams, setTeams] = useState([]);
+
+  useEffect(()=>{
+    reloadEmployees();
+
+    reloadMilestones();
+
+   fetch('http://localhost:3001/teams/', {
+      method: 'get',
+      headers: {'Content-Type':'application/json'}
+   }).then(resp=>resp.json()).then(employeesList=>{
+     let t = [];
+     employeesList.forEach(x=>{
+        t.push({
+          teamId: x.team_id,
+          name: x.name
+        })
+     })
+     setTeamsList(t);
+   })
+
+  },[]);
+
+  const reloadEmployees = ()=>{
+    fetch('http://localhost:3001/employees/', {
+      method: 'get',
+      headers: {'Content-Type':'application/json'}
+   }).then(resp=>resp.json()).then(employeesList=>{
+     let t = [];
+     employeesList.forEach(employee=>{
+        t.push({
+          employeeId: employee.employee_id,
+          jobId: employee.job_id,
+          firstName: employee.first_name,
+          lastName: employee.last_name,
+          teamId: employee.team_id
+        })
+     })
+     setEmployees(t);
+   })
+  }
+
+  const reloadMilestones = ()=>{
+    fetch('http://localhost:3001/milestones/', {
+      method: 'get',
+      headers: {'Content-Type':'application/json'}
+   }).then(resp=>resp.json()).then(employeesList=>{
+     let t = [];
+     employeesList.forEach(x=>{
+        t.push({
+          milestoneId: x.milestone_id,
+          name: x.name,
+          teamId: x.team_id
+        })
+     })
+     setMilestones(t);
+   })
+  }
 
   const removeTeam = (id) => {
     setTeamsList(teamsList.filter((team) => team.teamId !== id));
@@ -114,41 +124,20 @@ const Teams = (props) => {
     setTeamsList([...teamsList, { teamId: nextId(), name: teamName }]);
   };
 
-<<<<<<< HEAD
-    //call api
-    setTeamsList([...teamsList, { teamId: nextId(), name: teamName }]);
-  };
-
-  const handleAddEmployeeForm = () => {
-    setOpenAddEmployee(!openAddEmployee);
-  };
-
-  const handleRemoveEmployeeForm = () => {
-    setOpenRemoveEmployee(!openRemoveEmployee);
-  };
-
-  const handleMilestonesForm = () => {
-    setOpenMilestonesForm(!openMilestonesForm);
-  };
-
-  //get the list of employee ids that need to be added or removed from the team
-  const getEmployeeIds = (ids) => {
-    //tu jest taki problem, że ids przychodzi aktualne, ale useState aktualizuje się dopiero przy renderze
-    setListOfIds(ids);
-
-    //call api
-=======
   const handleAddEmployeeForm = (id) => {
+    setSelectedEmployees(employees.filter(employee=>employee.teamId == null))
     setOpenAddEmployee(!openAddEmployee);
     setSelectedTeamId(id);
   };
 
   const handleRemoveEmployeeForm = (id) => {
+    setSelectedEmployees(employees.filter(employee=>employee.teamId == id))
     setOpenRemoveEmployee(!openRemoveEmployee);
     setSelectedTeamId(id);
   };
 
   const handleMilestonesForm = (id) => {
+    setFreeMilestones(milestones.filter(milestone=>milestone.teamId == null))
     setOpenMilestonesForm(!openMilestonesForm);
     setSelectedTeamId(id);
   };
@@ -158,19 +147,44 @@ const Teams = (props) => {
     //call api
     //console.log("Team id " + teamId);
     //console.log("List of ids " + ids);
+    ids.forEach(id => {
+      fetch('http://localhost:3001/employees', {
+        method: 'PUT',
+        headers: {'Content-Type':'application/json'},
+        body:JSON.stringify({"employee_id":id,"team_id":teamId})
+     })
+    });
+    reloadEmployees();
   };
 
   const addEmployees = (teamId, ids) => {
+
     //dodawanie zaznaczonych pracowników do zespołu
-    //call api
+    ids.forEach(id => {
+      fetch('http://localhost:3001/employees', {
+        method: 'PUT',
+        headers: {'Content-Type':'application/json'},
+        body:JSON.stringify({"employee_id":id,"team_id":teamId})
+     })
+    });
+
     //console.log("Team id " + teamId);
     //console.log("List of ids " + ids);
+    reloadEmployees();
   };
 
   const addMilestones = (ids) => {
     //call api
     //console.log("Team id " + selectedTeamId);
     //console.log("List of ids " + ids);
+    ids.forEach(id => {
+      fetch('http://localhost:3001/milestones', {
+        method: 'PUT',
+        headers: {'Content-Type':'application/json'},
+        body:JSON.stringify({"milestone_id":id,"team_id":selectedTeamId})
+     })
+    });
+    reloadMilestones();
   };
 
   //get the list of employee ids that need to be added or removed from the team
@@ -180,7 +194,6 @@ const Teams = (props) => {
     } else if (action === "a") {
       addEmployees(selectedTeamId, ids);
     }
->>>>>>> main
   };
 
   return (
@@ -213,19 +226,6 @@ const Teams = (props) => {
                   </Button>
                 </TableCell>
                 <TableCell align="left">
-<<<<<<< HEAD
-                  <Button onClick={handleAddEmployeeForm.bind(this)}>
-                    Dodaj pracownika
-                  </Button>
-                </TableCell>
-                <TableCell align="left">
-                  <Button onClick={handleRemoveEmployeeForm.bind(this)}>
-                    Usuń pracownika
-                  </Button>
-                </TableCell>
-                <TableCell align="left">
-                  <Button onClick={handleMilestonesForm.bind(this)}>
-=======
                   <Button
                     onClick={handleAddEmployeeForm.bind(this, row.teamId)}
                   >
@@ -241,7 +241,6 @@ const Teams = (props) => {
                 </TableCell>
                 <TableCell align="left">
                   <Button onClick={handleMilestonesForm.bind(this, row.teamId)}>
->>>>>>> main
                     Przypisz kamienie milowe
                   </Button>
                 </TableCell>
@@ -257,35 +256,23 @@ const Teams = (props) => {
       </TableContainer>
       <AddTeamForm open={openAddTeam} close={closeAddTeamForm.bind(this)} />
       <AddEmployeeForm
-<<<<<<< HEAD
-        user={props.user}
-=======
         user={user}
->>>>>>> main
-        employees={employees}
+        employees={selectedEmployees}
         parentCallback={getEmployeeIds}
         open={openAddEmployee}
         close={handleAddEmployeeForm.bind(this)}
       />
       <RemoveEmployeeForm
-<<<<<<< HEAD
-        user={props.user}
-=======
         user={user}
->>>>>>> main
-        employees={employees}
+        employees={selectedEmployees}
         parentCallback={getEmployeeIds}
         open={openRemoveEmployee}
         close={handleRemoveEmployeeForm.bind(this)}
       />
       <AddMilestonesForm
-<<<<<<< HEAD
-        parentCallback={getEmployeeIds}
-=======
         user={user}
-        milestones={milestones}
+        milestones={freeMilestones}
         parentCallback={addMilestones}
->>>>>>> main
         open={openMilestonesForm}
         close={handleMilestonesForm.bind(this)}
       />

@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import ListOfEmployees from "../Lists/ListOfEmployees";
 
-const employees = [
+/*const employees = [
   {
     employeeId: 1,
     jobId: 3,
@@ -30,8 +30,31 @@ const employees = [
     lastName: "Drwal",
     email: "Franek@gmail.com",
   },
-];
+];*/
 const Employees = (props) => {
+
+  const [employees, setEmployees] = useState([]);
+
+  useEffect(()=>{
+      fetch('http://localhost:3001/employees/', {
+        method: 'get',
+        headers: {'Content-Type':'application/json'}
+     }).then(resp=>resp.json()).then(employeesList=>{
+       let t = [];
+       employeesList.forEach(employee=>{
+          t.push({
+            employeeId: employee.employee_id,
+            jobId: employee.job_id,
+            firstName: employee.first_name,
+            lastName: employee.last_name,
+            email: employee.email
+          })
+       })
+       console.log(t);
+       setEmployees(t);
+     })
+  },[]);
+
   return <ListOfEmployees employees={employees} user={props.user} />;
 };
 

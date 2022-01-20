@@ -19,7 +19,7 @@ class Database {
     }
 
     getEmployees(teamId, callback) {
-        let query = 'SELECT employee_id, first_name, last_name, email, job_title, team_id FROM employees JOIN jobs on employees.job_id = jobs.job_id';
+        let query = 'SELECT employee_id, first_name, last_name, email, job_title, employees.job_id, team_id FROM employees JOIN jobs on employees.job_id = jobs.job_id';
         if (teamId != -1) query += (' WHERE employees.team_id = ' + teamId);
         return this.connection.query(query, function (error, results, fields) {
             if (error) console.log(error);
@@ -70,7 +70,7 @@ class Database {
         })
     }
 
-    getMilestones(callback) {
+    getAllMilestones(callback) {
         this.connection.query('SELECT m.*, p.name AS "project_name" FROM milestones m INNER JOIN projects p ON m.project_id = p.project_id', function (error, results, fields) {
             if (error) console.log(error);
             callback(results);
@@ -111,7 +111,7 @@ class Database {
     }
 
     getProjects(callback) {
-        return this.connection.query('SELECT p.*, s.status FROM projects p JOIN project_status s ON p.status_id = s.status_id', function (error, results, fields) {
+        return this.connection.query('SELECT p.*, s.status, p.name as project_name FROM projects p JOIN project_status s ON p.status_id = s.status_id', function (error, results, fields) {
             if (error) console.log(error);
             callback(results);
         });

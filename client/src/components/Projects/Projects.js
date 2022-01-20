@@ -16,7 +16,13 @@ const Projects = (props) => {
 
 
     useEffect(() => {
-        fetch('http://localhost:3001/milestones?userId=' + props.user.id, {
+        let url
+        if(props.user.jobId === 1){
+            url = 'http://localhost:3001/projects'
+        }else{
+            url = 'http://localhost:3001/milestones?userId=' + props.user.id
+        }
+        fetch(url, {
           method: 'get',
           headers: {'Content-Type':'application/json'}
        }).then(resp=>resp.json()).then(

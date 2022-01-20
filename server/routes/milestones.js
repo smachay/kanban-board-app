@@ -16,7 +16,7 @@ router.get('/', function (req, res) {
     }
    
   } else {
-    res.send(403);
+    database.getAllMilestones(milestones => res.send(milestones));
   }
 });
 
