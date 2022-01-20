@@ -1,5 +1,5 @@
 import React from "react";
-import ListOfEmployees from "../ListOfEmployees/ListOfEmployees";
+import ListOfEmployees from "../Lists/ListOfEmployees";
 
 function createData(id, firstName, lastName, email, jobTitle) {
   return { id, firstName, lastName, email, jobTitle };
