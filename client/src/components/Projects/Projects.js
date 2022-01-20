@@ -1,5 +1,5 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 
 function createData(id, name) {
     return { id, name};
@@ -11,7 +11,26 @@ function createData(id, name) {
         createData(3,"Aplikacj To-Do")
   ];
 
-const Projects = () => {
+const Projects = (props) => {
+    const [projects, setProjects] = useState([]);
+
+
+    useEffect(() => {
+        fetch('http://localhost:3001/milestones?userId=' + props.user.id, {
+          method: 'get',
+          headers: {'Content-Type':'application/json'}
+       }).then(resp=>resp.json()).then(
+         x=>{
+           let t = [];
+           x.forEach(user => {
+             console.log(user);
+          t.push(createData(user.project_id, user.project_name))
+        })
+        setProjects(t);
+      }
+        )
+      }, []);
+
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
