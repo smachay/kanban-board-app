@@ -135,12 +135,15 @@ const Projects = (props) => {
   return (
     <div>
       {openMilestones === true ? (
+        <div>
         <ListOfMilestones
           update={addMilestone}
           user={props.user}
           view={2}
           milestones={milestones.filter(m=>m.projectId == projectId)}
         />
+        <Button onClick={()=>setOpenMilestones(false)}>Cofnij</Button>
+        </div>
       ) : (
         <div>
           <TableContainer component={Paper}>
@@ -180,6 +183,7 @@ const Projects = (props) => {
                 </Button>
               </Box>
             </Table>
+
           </TableContainer>
           <AddProjectForm
             open={openAddProject}
