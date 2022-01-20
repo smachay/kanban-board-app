@@ -69,6 +69,9 @@ const ListOfEmployees = (props) => {
         return "";
     }
   };
+  const handleRemoveEmployee = (id) => {
+    props.removeEmployee(id);
+  };
 
   const handleAddEmployee = () => {
     setOpenAddEmployee(!openAddEmployee);
@@ -105,6 +108,7 @@ const ListOfEmployees = (props) => {
               <TableCell align="left">
                 {view !== 1 ? <b>Email</b> : <div></div>}
               </TableCell>
+              <TableCell align="left"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -129,6 +133,17 @@ const ListOfEmployees = (props) => {
                     />
                   </TableCell>
                 )}
+                <TableCell align="left">
+                  {user.jobId === 1 && view !== 1 ? (
+                    <Button
+                      onClick={handleRemoveEmployee.bind(this, row.employeeId)}
+                    >
+                      Usuń
+                    </Button>
+                  ) : (
+                    " "
+                  )}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
