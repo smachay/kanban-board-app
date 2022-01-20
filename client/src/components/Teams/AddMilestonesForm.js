@@ -6,25 +6,16 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import ListOfEmployees from "../ListOfEmployees/ListOfEmployees";
 
-export const AddEmployeeForm = (props) => {
-  const [listOfIds, setListOfIds] = useState([]);
-
+const AddMilestonesForm = (props) => {
   const handleClose = () => {
     props.close();
   };
 
-  //recives id list from list component and sends it to parent component
-  const handleChildCallback = (ids) => {
-    setListOfIds(ids);
-  };
-
   const handleParentCallback = () => {
-    props.parentCallback(listOfIds);
+    props.parentCallback();
     handleClose();
   };
-
   return (
     <Dialog maxWidth="xl" open={props.open}>
       <DialogContent
@@ -36,14 +27,8 @@ export const AddEmployeeForm = (props) => {
         }}
       >
         <Typography>
-          <b>Wybierz pracowników do dodania</b>
+          <b>Wybierz kamienie milowe do dodania</b>
         </Typography>
-        <ListOfEmployees
-          user={props.user}
-          view={1}
-          employees={props.employees}
-          onChange={handleChildCallback}
-        />
       </DialogContent>
       <DialogActions
         sx={{
@@ -51,9 +36,11 @@ export const AddEmployeeForm = (props) => {
           justifyContent: "center",
         }}
       >
-        <Button onClick={handleParentCallback}>Dodaj</Button>
+        <Button>Dodaj</Button>
         <Button onClick={handleClose}>Anuluj</Button>
       </DialogActions>
     </Dialog>
   );
 };
+
+export default AddMilestonesForm;

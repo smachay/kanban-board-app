@@ -9,10 +9,13 @@ import {
   Button,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AddTeamForm } from "./AddTeamForm";
 import nextId from "react-id-generator";
 import { AddEmployeeForm } from "./AddEmployeeForm";
+import RemoveEmployeeForm from "./RemoveEmployeeForm";
+import AddMilestoneForm from "./AddMilestonesForm";
+import AddMilestonesForm from "./AddMilestonesForm";
 
 const teams = [
   {
@@ -55,11 +58,20 @@ const employees = [
     lastName: "Drwal",
   },
 ];
-
+/*
+  Do <AddEmployeeForm> musisz podpiąć array z użytkownikami którzy nie mająprzypisanego zespołu
+  Do <RemoveEmployeeForm> array członków zespołu
+*/
 const Teams = (props) => {
   const [teamsList, setTeamsList] = useState(teams);
+  const [listOfIds, setListOfIds] = useState([]);
   const [openAddTeam, setOpenAddTeam] = useState(false);
   const [openAddEmployee, setOpenAddEmployee] = useState(false);
+  const [openRemoveEmployee, setOpenRemoveEmployee] = useState(false);
+  const [openMilestonesForm, setOpenMilestonesForm] = useState(false);
+  useEffect(() => {
+    //console.log(listOfIds);
+  }, [listOfIds]);
 
   const removeTeam = (id) => {
     setTeamsList(teamsList.filter((team) => team.teamId !== id));
@@ -73,19 +85,28 @@ const Teams = (props) => {
   const closeAddTeamForm = (teamName) => {
     setOpenAddTeam(false);
 
-    let newTeamsList = [...teamsList];
-    newTeamsList.push({ teamId: nextId(), name: teamName });
+    //call api
+    setTeamsList([...teamsList, { teamId: nextId(), name: teamName }]);
+  };
+
+  const handleAddEmployeeForm = () => {
+    setOpenAddEmployee(!openAddEmployee);
+  };
+
+  const handleRemoveEmployeeForm = () => {
+    setOpenRemoveEmployee(!openRemoveEmployee);
+  };
+
+  const handleMilestonesForm = () => {
+    setOpenMilestonesForm(!openMilestonesForm);
+  };
+
+  //get the list of employee ids that need to be added or removed from the team
+  const getEmployeeIds = (ids) => {
+    //tu jest taki problem, że ids przychodzi aktualne, ale useState aktualizuje się dopiero przy renderze
+    setListOfIds(ids);
 
     //call api
-    setTeamsList(newTeamsList);
-  };
-
-  const openAddEmployeeForm = () => {
-    setOpenAddEmployee(true);
-  };
-
-  const closeAddEmployeeForm = (employee) => {
-    setOpenAddEmployee(false);
   };
 
   return (
@@ -118,15 +139,19 @@ const Teams = (props) => {
                   </Button>
                 </TableCell>
                 <TableCell align="left">
-                  <Button onClick={openAddEmployeeForm.bind(this)}>
+                  <Button onClick={handleAddEmployeeForm.bind(this)}>
                     Dodaj pracownika
                   </Button>
                 </TableCell>
                 <TableCell align="left">
-                  <Button>Usuń pracownika</Button>
+                  <Button onClick={handleRemoveEmployeeForm.bind(this)}>
+                    Usuń pracownika
+                  </Button>
                 </TableCell>
                 <TableCell align="left">
-                  <Button>Przypisz kamienie milowe</Button>
+                  <Button onClick={handleMilestonesForm.bind(this)}>
+                    Przypisz kamienie milowe
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -141,9 +166,22 @@ const Teams = (props) => {
       <AddTeamForm open={openAddTeam} close={closeAddTeamForm.bind(this)} />
       <AddEmployeeForm
         user={props.user}
-        open={openAddEmployee}
         employees={employees}
-        close={closeAddEmployeeForm.bind(this)}
+        parentCallback={getEmployeeIds}
+        open={openAddEmployee}
+        close={handleAddEmployeeForm.bind(this)}
+      />
+      <RemoveEmployeeForm
+        user={props.user}
+        employees={employees}
+        parentCallback={getEmployeeIds}
+        open={openRemoveEmployee}
+        close={handleRemoveEmployeeForm.bind(this)}
+      />
+      <AddMilestonesForm
+        parentCallback={getEmployeeIds}
+        open={openMilestonesForm}
+        close={handleMilestonesForm.bind(this)}
       />
     </div>
   );

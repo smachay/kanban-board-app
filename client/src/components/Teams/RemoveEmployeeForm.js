@@ -1,14 +1,15 @@
 import {
-  Dialog,
   Button,
+  Dialog,
   DialogActions,
   DialogContent,
+  TextField,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import ListOfEmployees from "../ListOfEmployees/ListOfEmployees";
 
-export const AddEmployeeForm = (props) => {
+const RemoveEmployeeForm = (props) => {
   const [listOfIds, setListOfIds] = useState([]);
 
   const handleClose = () => {
@@ -36,7 +37,7 @@ export const AddEmployeeForm = (props) => {
         }}
       >
         <Typography>
-          <b>Wybierz pracowników do dodania</b>
+          <b>Wybierz pracowników do usunięcia</b>
         </Typography>
         <ListOfEmployees
           user={props.user}
@@ -51,9 +52,11 @@ export const AddEmployeeForm = (props) => {
           justifyContent: "center",
         }}
       >
-        <Button onClick={handleParentCallback}>Dodaj</Button>
+        <Button onClick={handleParentCallback}>Usuń</Button>
         <Button onClick={handleClose}>Anuluj</Button>
       </DialogActions>
     </Dialog>
   );
 };
+
+export default RemoveEmployeeForm;
