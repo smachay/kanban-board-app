@@ -42,6 +42,9 @@ const ListOfEmployees = (props) => {
   }, [props.employees])
 
   useEffect(() => {
+    if (typeof props.onChange === "undefined") {
+    }
+
     if (typeof props.employees !== "undefined") {
       setEmployees(props.employees);
     } else {
@@ -65,6 +68,10 @@ const ListOfEmployees = (props) => {
     
     if(props.onChange !== undefined) props.onChange(checkedEmployees);
 
+<<<<<<< HEAD
+=======
+    if (props.onChange !== undefined) props.onChange(checkedEmployees);
+>>>>>>> main
   }, [checkedEmployees]);
 
   const setJobTitle = (id) => {
