@@ -37,7 +37,7 @@ export const AddMilestoneForm = (props) => {
         }}
       >
         <Typography>
-          <b>Podaj nazwę nowego zespołu</b>
+          <b>Podaj nazwę nowego kamienia milowego</b>
         </Typography>
         <TextField
           onChange={(event) => setName(event.target.value)}
