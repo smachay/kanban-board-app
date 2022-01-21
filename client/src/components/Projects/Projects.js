@@ -177,12 +177,24 @@ const Projects = (props) => {
                   </TableRow>
                 ))}
               </TableBody>
+<<<<<<< HEAD
               {props.user.jobId===1? <Box sx={{ m: 1 }}>
                 <Button onClick={handleAddProject.bind(this)}>
                   Dodaj nowy projekt
                 </Button>
               </Box>:<div></div>}
              
+=======
+              <Box sx={{ m: 1 }}>
+                {props.user.jobId === 1 ? (
+                  <Button onClick={handleAddProject.bind(this)}>
+                    Dodaj nowy projekt
+                  </Button>
+                ) : (
+                  " "
+                )}
+              </Box>
+>>>>>>> main
             </Table>
 
           </TableContainer>
