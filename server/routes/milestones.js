@@ -34,8 +34,16 @@ router.get('/', function (req, res) {
   }
 });
 
+router.get('/:milestoneId(\\d+)', function (req, res) {
+  database.getMilestone(req.params.milestoneId, status => res.send(status));
+});
+
 router.get('/:milestoneId(\\d+)/status', function (req, res) {
   database.getStatus(req.params.milestoneId, status => res.send(status));
+});
+
+router.get('/:milestoneId(\\d+)/kanban', function (req, res) {
+  database.getKanban(req.params.milestoneId, status => res.send(status));
 });
 
 router.post('/', (req, res) => {

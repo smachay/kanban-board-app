@@ -1,5 +1,5 @@
 import { Grid, Paper, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Task from "./Task";
 const tasks = [
   {
@@ -56,18 +56,72 @@ const tasks = [
 const KanbanBoard = (props) => {
   const [milestoneId] = useState(props.milestoneId);
   const [milestoneName, setMilestoneName] = useState(
-    "Webowa aplikacja kliencka"
+    ""
   );
   const [projectName, setProjectName] = useState(
-    "Aplikacja do obsługi klientów"
+    ""
   );
+
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(()=>{
+    fetch('http://localhost:3001/milestones/' + milestoneId, {
+      method: 'get',
+      headers: {'Content-Type':'application/json'}
+   }).then(r=>r.json()).then(m=>{
+     console.log("m", m[0])
+     setMilestoneName(m[0].name);
+     setProjectName(m[0].project_name)
+   });
+
+   fetch('http://localhost:3001/milestones/' + milestoneId + '/kanban', {
+    method: 'get',
+    headers: {'Content-Type':'application/json'}
+ }).then(r=>r.json()).then(k=>{
+   let t = []
+   k.forEach(element => {
+     t.push({
+       id: element.task_id,
+       name: element.name,
+       status: element.status_id,
+       developer: element.developer,
+       developerId: element.developerId,
+       tester: element.tester,
+       testerId: element.testerId,
+       note: element.note
+     })
+   });
+   console.log(t)
+   setTasks(t);
+ });
+
+
+  }, [props.milestoneId])
+
   const changeStatus = (id, status) => {
     console.log("id tasku:" + id);
     console.log("nowy stan:" + status);
+    fetch('http://localhost:3001/tasks', {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json'},
+      body:JSON.stringify({
+        "task_id": id,
+        "status_id": status
+   })})
+
   };
   const changeNote = (id, note) => {
     console.log("id tasku:" + id);
     console.log("notatka:" + note);
+
+    fetch('http://localhost:3001/tasks', {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json'},
+      body:JSON.stringify({
+        "task_id": id,
+        "note": note
+   })})
+
   };
 
   return (
@@ -86,7 +140,7 @@ const KanbanBoard = (props) => {
         <Grid xs={2}>
           <b>Nieprzypisane</b>
           {tasks
-            .filter((obj) => obj.status === 0)
+            .filter((obj) => obj.status === 1)
             .map((obj) => {
               return (
                 <Task name={obj.name} user={props.user} status={obj.status} />
@@ -96,7 +150,7 @@ const KanbanBoard = (props) => {
         <Grid xs={2}>
           <b>W trakcie</b>
           {tasks
-            .filter((obj) => obj.status === 1)
+            .filter((obj) => obj.status === 2)
             .map((obj) => {
               return (
                 <Task
@@ -114,7 +168,7 @@ const KanbanBoard = (props) => {
         <Grid xs={2}>
           <b>Do testu</b>
           {tasks
-            .filter((obj) => obj.status === 2)
+            .filter((obj) => obj.status === 3)
             .map((obj) => {
               return (
                 <Task
@@ -136,7 +190,7 @@ const KanbanBoard = (props) => {
         <Grid xs={2}>
           <b>Do poprawy</b>
           {tasks
-            .filter((obj) => obj.status === 3)
+            .filter((obj) => obj.status === 4)
             .map((obj) => {
               return (
                 <Task
@@ -157,7 +211,7 @@ const KanbanBoard = (props) => {
         <Grid xs={2}>
           <b>Wykonane</b>
           {tasks
-            .filter((obj) => obj.status === 4)
+            .filter((obj) => obj.status === 5)
             .map((obj) => {
               return (
                 <Task

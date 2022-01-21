@@ -29,7 +29,7 @@ const Task = (props) => {
 
   const discardTask = () => {
     setOpenNoteForm(true);
-    props.changeStatus.bind(this, props.taskId, 3);
+    props.changeStatus.bind(this, props.taskId, 4);
   };
 
   const loadInfo = () => {
@@ -42,7 +42,7 @@ const Task = (props) => {
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div">
             <Typography>Programista:{props.developer}</Typography>
-            {props.status !== 1 ? (
+            {props.status !== 2 ? (
               <Typography>Tester:{props.tester}</Typography>
             ) : (
               <div></div>
@@ -66,7 +66,7 @@ const Task = (props) => {
       <div>
         <ListItemButton>
           <ListItemText
-            onClick={props.changeStatus.bind(this, props.taskId, 2)}
+            onClick={props.changeStatus.bind(this, props.taskId, 3)}
             primary="Zatwierdź"
           />
         </ListItemButton>
@@ -78,7 +78,7 @@ const Task = (props) => {
       <div>
         <ListItemButton>
           <ListItemText
-            onClick={props.changeStatus.bind(this, props.taskId, 4)}
+            onClick={props.changeStatus.bind(this, props.taskId, 5)}
             primary="Zatwierdź"
           />
         </ListItemButton>
@@ -94,20 +94,20 @@ const Task = (props) => {
     <Paper display="flex" sx={{ m: 1, p: 1 }}>
       <Typography align="center">{props.name}</Typography>
       <List sx={{ width: "100%" }} component="nav">
-        {(props.status === 1 &&
+        {(props.status === 2 &&
           props.user.jobId === 3 &&
           props.user.id === props.developerId) ||
-        (props.status === 3 &&
+        (props.status === 4 &&
           props.user.jobId === 3 &&
           props.user.id === props.developerId)
           ? loadDeveloper()
           : " "}
-        {props.status === 2 &&
+        {props.status === 3 &&
         props.user.jobId === 4 &&
         props.user.id === props.testerId
           ? loadTester()
           : " "}
-        {props.status !== 0 ? loadInfo() : " "}
+        {props.status !== 1 ? loadInfo() : " "}
       </List>
       <NoteForm
         open={openNoteForm}

@@ -93,8 +93,23 @@ class Database {
         });
     }
 
+    getMilestone(milestoneId, callback) {
+        this.connection.query('SELECT m.*, p.project_id, p.name as project_name FROM milestones m LEFT JOIN projects p on m.project_id = p.project_id WHERE m.milestone_id=' + milestoneId, function (error, results, fields) {
+            if (error) console.log(error);
+            callback(results);
+        });
+    }
+
     getStatus(milestoneId, callback) {
         return this.connection.query('SELECT s.status FROM milestones m JOIN milestones_status s on m.status_id = s.status_id WHERE m.milestone_id = ' + milestoneId, function (error, results, fields) {
+            if (error) console.log(error);
+            callback(results);
+        });
+    }
+
+    getKanban(milestoneId, callback) {
+        let query = 'SELECT t.*, e.first_name as developer, em.first_name as tester, notes.note FROM (SELECT t.task_id, t.name, t.status_id, p.employee_id as developerId, test.employee_id as testerId from tasks t LEFT JOIN (select * from task_employees where employee_id in (select employee_id from employees where job_id = 3)) p ON t.task_id = p.task_id LEFT JOIN (select * from task_employees where employee_id in (select employee_id from employees where job_id = 4)) test ON t.task_id = test.task_id where t.milestone_id = ' + milestoneId + ') t LEFT JOIN employees e on e.employee_id = t.developerId LEFT JOIN employees em on em.employee_id = t.testerId LEFT JOIN notes on notes.task_id = t.task_id';
+        return this.connection.query(query, function (error, results, fields) {
             if (error) console.log(error);
             callback(results);
         });
