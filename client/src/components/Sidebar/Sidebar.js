@@ -84,22 +84,10 @@ const Sidebar = (props) => {
       path: "/dashboard/pracownicy",
     },
     {
-      type: 1,
-      text: "Archiwum",
-      icon: <ArchiveOutlined />,
-      path: "/dashboard/archiwum",
-    },
-    {
       type: 2,
       text: "Zespół",
       icon: <MailOutlined />,
       path: "/dashboard/zespol",
-    },
-    {
-      type: 0,
-      text: "Zmień hasło",
-      icon: <PasswordOutlined />,
-      path: "/dashboard/zmien-haslo",
     },
   ];
   //setting type of list that will be rendered on a sidebar
