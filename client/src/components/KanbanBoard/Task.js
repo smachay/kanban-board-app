@@ -1,164 +1,124 @@
-import React, { useEffect, useState } from 'react'
-import { Collapse, List, ListItemButton, ListItemText, Paper, Typography } from '@mui/material'
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
+import React, { useEffect, useState } from "react";
+import {
+  Collapse,
+  List,
+  ListItemButton,
+  ListItemText,
+  Paper,
+  Typography,
+} from "@mui/material";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 
 const Task = (props) => {
-    const [open, setOpen] = useState(false);
-    const [status, setStatus] = useState(props.status)
-    
-    const handleClick = () => {
-        setOpen(!open);
-    };
+  const [open, setOpen] = useState(false);
+  const [showTask, setShowTask] = useState(false);
 
-    const loadInfo = () => {
-        return <div>
-            <ListItemButton onClick={handleClick}>
-                <ListItemText primary="Info" />
-                {open ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-            <Collapse in={open} timeout="auto" unmountOnExit>
-                <List component="div" >
-                    <Typography>Programista:{props.developer}</Typography>
-                    {status !== 1 ? <Typography>
-                        Tester:{props.tester}
-                    </Typography> : <div></div>}
-                </List>
-            </Collapse>
-        </div>
-    }
+  const handleClick = () => {
+    setOpen(!open);
+  };
 
-    const loadTask = () => {
-        if(props.user >= 3 && status != 4){
-            return  <div>
-                        <ListItemButton>
-                             <ListItemText primary="Zatwierdź" />
-                        </ListItemButton>
-                        {status == 2 && props.user == 4 ? <ListItemButton>
-                            <ListItemText primary="Odrzuć" />
-                        </ListItemButton> : <div></div>}
-                    </div>
-        }
-    
-}
+  const loadInfo = () => {
     return (
-        <Paper display='flex' sx={{ m: 1, p: 1 }}>
-            <Typography align='center'>{props.name}</Typography>
-            <List
-                sx={{ width: '100%' }}
-                component="nav"
-            >
-                {status !== 0 ? loadTask() : ' '}
-                
-                {//temporary solution
-                    status !== 0 ? loadInfo() : ' '
-                }
-            </List>
+      <div>
+        <ListItemButton onClick={handleClick}>
+          <ListItemText primary="Info" />
+          {open ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <List component="div">
+            <Typography>Programista:{props.developer}</Typography>
+            {props.status !== 1 ? (
+              <Typography>Tester:{props.tester}</Typography>
+            ) : (
+              <div></div>
+            )}
+          </List>
+        </Collapse>
+      </div>
+    );
+  };
 
-        </Paper>
-    )
-}
+  const loadDeveloper = () => {
+    return (
+      <div>
+        <ListItemButton>
+          <ListItemText
+            onClick={props.changeStatus.bind(this, props.taskId, 2)}
+            primary="Zatwierdź"
+          />
+        </ListItemButton>
+      </div>
+    );
+  };
+  const loadTester = () => {
+    return (
+      <div>
+        <ListItemButton>
+          <ListItemText
+            onClick={props.changeStatus.bind(this, props.taskId, 4)}
+            primary="Zatwierdź"
+          />
+        </ListItemButton>
 
-export default Task
+        <ListItemButton>
+          <ListItemText
+            onClick={props.changeStatus.bind(this, props.taskId, 3)}
+            primary="Odrzuć"
+          />
+        </ListItemButton>
+      </div>
+    );
+  };
 
+  return (
+    <Paper display="flex" sx={{ m: 1, p: 1 }}>
+      <Typography align="center">{props.name}</Typography>
+      <List sx={{ width: "100%" }} component="nav">
+        {(props.status === 1 &&
+          props.user.jobId === 3 &&
+          props.user.id === props.developerId) ||
+        (props.status === 3 &&
+          props.user.jobId === 3 &&
+          props.user.id === props.developerId)
+          ? loadDeveloper()
+          : " "}
+        {props.status === 2 &&
+        props.user.jobId === 4 &&
+        props.user.id === props.testerId
+          ? loadTester()
+          : " "}
+        {props.status !== 0 ? loadInfo() : " "}
+      </List>
+    </Paper>
+  );
+};
 
-
-
+export default Task;
 
 /*
-if (status == 0) {
+  const [open, setOpen] = useState(false);
+  const [showTask, setShowTask] = useState(false);
+  const [status, setStatus] = useState(0);
+  const [name, setName] = useState(0);
+  const [developer, setDeveloper] = useState(0);
+  const [developerId, setDeveloperId] = useState(0);
+  const [tester, setTester] = useState(0);
+  const [testerId, setTesterId] = useState(0);
+  const [note, setNote] = useState(0);
+  const [user, setUser] = useState({});
 
-        } else if (status == 1 || status == 3 ) {
-            return <div>
-                        <ListItemButton>
-                            <ListItemText primary="Zatwierdź" />
-                        </ListItemButton>
-                        <ListItemButton onClick={handleClick}>
-                            <ListItemText primary="Info" />
-                            {open ? <ExpandLess /> : <ExpandMore />}
-                        </ListItemButton>
-                        <Collapse in={open} timeout="auto" unmountOnExit>
-                            <List component="div" >
-                                <Typography>Programista:{props.developer}</Typography>
-                                {status == 4 ? 
-                                    <Typography>
-                                        Tester:{props.tester}
-                                    </Typography> 
-                                    : 
-                                    <div></div>}
-                            </List>
-                        </Collapse>
-                    </div>
-        } else if (status == 2 ) {
-            return  <div>
-                        {props.user == 4 ? <ListItemButton>
-                            <ListItemText primary="Zatwierdź" />
-                        </ListItemButton>
-                        :
-                        <div></div>}
-                        
-                        {props.user == 4 ? <ListItemButton>
-                            <ListItemText primary="Odrzuć" />
-                        </ListItemButton>
-                        :
-                        <div></div>}
-
-                        <ListItemButton onClick={handleClick}>
-                            <ListItemText primary="Info" />
-                            {open ? <ExpandLess /> : <ExpandMore />}
-                        </ListItemButton>
-                        
-                    </div>
-        } else if (status == 4) {
-
-        }
-                <ListItemButton>
-                    <ListItemText primary="Zatwierdź" />
-                </ListItemButton>
-                <ListItemButton>
-                    <ListItemText primary="Odrzuć" />
-                </ListItemButton>
-                <ListItemButton onClick={handleClick}>
-                    <ListItemText primary="Info" />
-                    {open ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-                <Collapse in={open} timeout="auto" unmountOnExit>
-                    <List component="div" >
-                        <Typography>Programista:{props.developer}</Typography>
-                        {<Typography>Tester:{props.tester}</Typography>}
-                        </List>
-                        </Collapse>
-
-
-
-import { List, ListItemButton, ListItemText, Paper, Typography } from '@mui/material'
-import React from 'react'
-
-const Task = () => {
-    const [open, setOpen] = React.useState(true);
-
-    const handleClick = () => {
-        setOpen(!open);
-    };
-
-    return (
-        <Paper display='flex' sx={{ m: 1, p:1}}>
-            <Typography align='center'>Treść zadania</Typography>
-            <List
-                sx={{ width: '100%', bgcolor: 'background.paper' }}
-                component="nav"
-            >
-                
-                <ListItemButton>
-                    <ListItemText primary="Zatwierdź" />
-                </ListItemButton>
-                <ListItemButton>
-                    <ListItemText primary="Odrzuć" />
-                </ListItemButton>
-            </List>
-
-        </Paper>
-    )
-}
-
-export default Task*/
+  useEffect(() => {
+    if (user === {}) {
+      setStatus(props.task.status);
+      setName(props.task.name);
+      setDeveloper(props.task.developer);
+      setDeveloperId(props.task.developerId);
+      setTester(props.task.tester);
+      setTesterId(props.task.testerId);
+      setNote(props.task.note);
+      setUser(props.user);
+      setShowTask(true);
+    }
+  });
+  */
