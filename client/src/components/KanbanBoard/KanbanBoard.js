@@ -1,5 +1,6 @@
-import { Grid, Paper, Typography } from "@mui/material";
+import { Button, Grid, Paper, Typography } from "@mui/material";
 import React, { useState } from "react";
+import { AddTaskForm } from "./AddTaskForm";
 import Task from "./Task";
 const tasks = [
   {
@@ -53,7 +54,36 @@ const tasks = [
     note: "tabele przechowują dane w sposób atomowy, czyli każde pole przechowuje",
   },
 ];
+
+const employees = [
+  {
+    employeeId: 1,
+    jobId: 3,
+    firstName: "Franek",
+    lastName: "Bor",
+  },
+  {
+    employeeId: 2,
+    jobId: 3,
+    firstName: "Kamil",
+    lastName: "Wiśnia",
+  },
+  {
+    employeeId: 3,
+    jobId: 4,
+    firstName: "Piotrek",
+    lastName: "Brzoza",
+  },
+  {
+    employeeId: 4,
+    jobId: 4,
+    firstName: "Karol",
+    lastName: "Drwal",
+  },
+];
+
 const KanbanBoard = (props) => {
+  const [openAddTask, setOpenAddTask] = useState(false);
   const [milestoneId] = useState(props.milestoneId);
   const [milestoneName, setMilestoneName] = useState(
     "Webowa aplikacja kliencka"
@@ -61,6 +91,13 @@ const KanbanBoard = (props) => {
   const [projectName, setProjectName] = useState(
     "Aplikacja do obsługi klientów"
   );
+
+  const [teamLeaderId, setTeamLeaderId] = useState(2);
+
+  const handleAddTask = () => {
+    setOpenAddTask(!openAddTask);
+  };
+
   const changeStatus = (id, status) => {
     console.log("id tasku:" + id);
     console.log("nowy stan:" + status);
@@ -68,6 +105,11 @@ const KanbanBoard = (props) => {
   const changeNote = (id, note) => {
     console.log("id tasku:" + id);
     console.log("notatka:" + note);
+  };
+  const addTask = (name, developerId, testerId) => {
+    console.log("nazwa:" + name);
+    console.log("developer id:" + developerId);
+    console.log("tester id" + testerId);
   };
 
   return (
@@ -81,6 +123,11 @@ const KanbanBoard = (props) => {
           <b>Kamień milowy:</b>
           {milestoneName}
         </Typography>
+        {props.user.id === teamLeaderId ? (
+          <Button onClick={handleAddTask}>Dodaj zadanie</Button>
+        ) : (
+          <div></div>
+        )}
       </Paper>
       <Grid container direction="row" justifyContent="center">
         <Grid xs={2}>
@@ -174,6 +221,13 @@ const KanbanBoard = (props) => {
             })}
         </Grid>
       </Grid>
+      <AddTaskForm
+        open={openAddTask}
+        addTask={addTask}
+        teamDevelopers={employees}
+        teamTesters={employees}
+        close={handleAddTask.bind(this)}
+      />
     </Grid>
   );
 };
