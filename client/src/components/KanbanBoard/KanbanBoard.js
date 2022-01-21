@@ -1,5 +1,6 @@
-import { Grid, Paper, Typography } from "@mui/material";
+import { Button, Grid, Paper, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
+import { AddTaskForm } from "./AddTaskForm";
 import Task from "./Task";
 const tasks = [
   {
@@ -53,7 +54,36 @@ const tasks = [
     note: "tabele przechowują dane w sposób atomowy, czyli każde pole przechowuje",
   },
 ];
+
+const employees = [
+  {
+    employeeId: 1,
+    jobId: 3,
+    firstName: "Franek",
+    lastName: "Bor",
+  },
+  {
+    employeeId: 2,
+    jobId: 3,
+    firstName: "Kamil",
+    lastName: "Wiśnia",
+  },
+  {
+    employeeId: 3,
+    jobId: 4,
+    firstName: "Piotrek",
+    lastName: "Brzoza",
+  },
+  {
+    employeeId: 4,
+    jobId: 4,
+    firstName: "Karol",
+    lastName: "Drwal",
+  },
+];
+
 const KanbanBoard = (props) => {
+  const [openAddTask, setOpenAddTask] = useState(false);
   const [milestoneId] = useState(props.milestoneId);
   const [milestoneName, setMilestoneName] = useState(
     ""
@@ -64,6 +94,9 @@ const KanbanBoard = (props) => {
 
   const [tasks, setTasks] = useState([]);
 
+  const [employees, setEmployees] = useState([]);
+  
+
   useEffect(()=>{
     fetch('http://localhost:3001/milestones/' + milestoneId, {
       method: 'get',
@@ -72,6 +105,23 @@ const KanbanBoard = (props) => {
      console.log("m", m[0])
      setMilestoneName(m[0].name);
      setProjectName(m[0].project_name)
+     if(props.user.jobId == 2) setTeamLeaderId(props.user.id);
+
+     fetch('http://localhost:3001/employees?teamId=' + props.user.teamId, {
+      method: 'get',
+      headers: {'Content-Type':'application/json'}
+   }).then(res=>res.json()).then(x=>{
+     let t = [];
+     x.forEach(element => {
+       t.push({
+        employeeId: element.employee_id,
+        jobId: element.job_id,
+        firstName: element.first_name,
+        lastName: element.last_name,
+       })
+     });
+     setEmployees(t);
+   })
    });
 
    fetch('http://localhost:3001/milestones/' + milestoneId + '/kanban', {
@@ -95,8 +145,13 @@ const KanbanBoard = (props) => {
    setTasks(t);
  });
 
-
   }, [props.milestoneId])
+  
+  const [teamLeaderId, setTeamLeaderId] = useState(2);
+
+  const handleAddTask = () => {
+    setOpenAddTask(!openAddTask);
+  };
 
   const changeStatus = (id, status) => {
     console.log("id tasku:" + id);
@@ -123,6 +178,30 @@ const KanbanBoard = (props) => {
    })})
 
   };
+  const addTask = (name, developerId, testerId) => {
+    console.log("nazwa:" + name);
+    console.log("developer id:" + developerId);
+    console.log("tester id" + testerId);
+    fetch('http://localhost:3001/tasks', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body:JSON.stringify({
+        "name": name,
+        "milestone_id": milestoneId
+   })}).then(resp=>resp.json()).then(r=>{
+     
+     fetch('http://localhost:3001/tasks', {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json'},
+      body:JSON.stringify({
+        "task_id": r.insertId,
+        "tester_id": testerId,
+        "programmer_id": developerId,
+        "status_id": 2
+   })})
+   })
+
+  };
 
   return (
     <Grid container direction="column">
@@ -135,6 +214,11 @@ const KanbanBoard = (props) => {
           <b>Kamień milowy:</b>
           {milestoneName}
         </Typography>
+        {props.user.id === teamLeaderId ? (
+          <Button onClick={handleAddTask}>Dodaj zadanie</Button>
+        ) : (
+          <div></div>
+        )}
       </Paper>
       <Grid container direction="row" justifyContent="center">
         <Grid xs={2}>
@@ -228,6 +312,13 @@ const KanbanBoard = (props) => {
             })}
         </Grid>
       </Grid>
+      <AddTaskForm
+        open={openAddTask}
+        addTask={addTask}
+        teamDevelopers={employees}
+        teamTesters={employees}
+        close={handleAddTask.bind(this)}
+      />
     </Grid>
   );
 };
