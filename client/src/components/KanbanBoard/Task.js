@@ -9,13 +9,27 @@ import {
 } from "@mui/material";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import NoteForm from "./NoteForm";
 
 const Task = (props) => {
   const [open, setOpen] = useState(false);
+  const [openNoteForm, setOpenNoteForm] = useState(false);
   const [showTask, setShowTask] = useState(false);
+
+  const closeForm = () => {
+    setOpenNoteForm(false);
+  };
 
   const handleClick = () => {
     setOpen(!open);
+  };
+  const getNote = (note) => {
+    props.parentCallback(props.taskId, note);
+  };
+
+  const discardTask = () => {
+    setOpenNoteForm(true);
+    props.changeStatus.bind(this, props.taskId, 3);
   };
 
   const loadInfo = () => {
@@ -32,6 +46,14 @@ const Task = (props) => {
               <Typography>Tester:{props.tester}</Typography>
             ) : (
               <div></div>
+            )}
+            <Typography>
+              <b>Informacja o błędzie:</b>
+            </Typography>
+            {props.note !== null ? (
+              <Typography>{props.note}</Typography>
+            ) : (
+              <Typography>Brak informacji</Typography>
             )}
           </List>
         </Collapse>
@@ -62,10 +84,7 @@ const Task = (props) => {
         </ListItemButton>
 
         <ListItemButton>
-          <ListItemText
-            onClick={props.changeStatus.bind(this, props.taskId, 3)}
-            primary="Odrzuć"
-          />
+          <ListItemText onClick={discardTask.bind(this)} primary="Odrzuć" />
         </ListItemButton>
       </div>
     );
@@ -90,6 +109,11 @@ const Task = (props) => {
           : " "}
         {props.status !== 0 ? loadInfo() : " "}
       </List>
+      <NoteForm
+        open={openNoteForm}
+        parentCallback={getNote}
+        close={closeForm}
+      />
     </Paper>
   );
 };

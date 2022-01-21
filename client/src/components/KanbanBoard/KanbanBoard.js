@@ -65,6 +65,10 @@ const KanbanBoard = (props) => {
     console.log("id tasku:" + id);
     console.log("nowy stan:" + status);
   };
+  const changeNote = (id, note) => {
+    console.log("id tasku:" + id);
+    console.log("notatka:" + note);
+  };
 
   return (
     <Grid container direction="column">
@@ -84,7 +88,9 @@ const KanbanBoard = (props) => {
           {tasks
             .filter((obj) => obj.status === 0)
             .map((obj) => {
-              return <Task user={props.user} status={obj.status} />;
+              return (
+                <Task name={obj.name} user={props.user} status={obj.status} />
+              );
             })}
         </Grid>
         <Grid xs={2}>
@@ -95,6 +101,7 @@ const KanbanBoard = (props) => {
               return (
                 <Task
                   user={props.user}
+                  name={obj.name}
                   taskId={obj.id}
                   status={obj.status}
                   developer={obj.developer}
@@ -112,13 +119,16 @@ const KanbanBoard = (props) => {
               return (
                 <Task
                   user={props.user}
+                  name={obj.name}
                   taskId={obj.id}
                   status={obj.status}
                   testerId={obj.testerId}
                   tester={obj.tester}
                   developer={obj.developer}
                   developerId={obj.developerId}
+                  note={obj.note}
                   changeStatus={changeStatus}
+                  parentCallback={changeNote}
                 />
               );
             })}
@@ -131,12 +141,14 @@ const KanbanBoard = (props) => {
               return (
                 <Task
                   user={props.user}
+                  name={obj.name}
                   status={obj.status}
                   taskId={obj.id}
                   tester={obj.tester}
                   testerId={obj.testerId}
                   developer={obj.developer}
                   developerId={obj.developerId}
+                  note={obj.note}
                   changeStatus={changeStatus}
                 />
               );
@@ -150,11 +162,13 @@ const KanbanBoard = (props) => {
               return (
                 <Task
                   user={props.user}
+                  name={obj.name}
                   status={obj.status}
                   testerId={obj.testerId}
                   developer={obj.developer}
                   tester={obj.tester}
                   developerId={obj.developerId}
+                  note={obj.note}
                 />
               );
             })}
