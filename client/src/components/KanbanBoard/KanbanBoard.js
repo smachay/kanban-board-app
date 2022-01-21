@@ -175,8 +175,9 @@ const KanbanBoard = (props) => {
       body:JSON.stringify({
         "task_id": id,
         "note": note
-   })})
+   })}).then(changeStatus(id, 4))
 
+  
   };
   const addTask = (name, developerId, testerId) => {
     console.log("nazwa:" + name);
