@@ -87,7 +87,7 @@ const Dashboard = (props) => {
       console.log("out:" + out.visible);
       console.log("in:" + inner);
     } else {
-      console.log("chuj");
+      console.log("Not working");
     }
   };
 
@@ -105,13 +105,7 @@ const Dashboard = (props) => {
       <Box sx={containerStyle}>
         <Navbar parentCallback={handleOpenSidebar} />
         <div ref={compRef} style={contentBoxStyle}>
-          {
-            <div style={scroll}>
-              dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-            </div>
-
-            /*loadPage(props.page)*/
-          }
+          {loadPage(props.page)}
         </div>
       </Box>
     </Box>
