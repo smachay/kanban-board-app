@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
-import { BrowserRouter, Routes } from "react-router-dom";
 import ListOfMilestones from "../Lists/ListOfMilestones";
 import { AddProjectForm } from "./AddProjectForm";
 
@@ -43,30 +42,27 @@ const Projects = (props) => {
   const [openAddProject, setOpenAddProject] = useState(false);
   const [projectId, setProjectId] = useState(null);
 
+  const endProject = (id) => {
+    console.log("Zakończony projekt:" + id);
+  };
+
   const showMilestones = (projectId) => {
     setProjectId(projectId);
-    setOpenMilestones(!openMilestones);
+    setOpenMilestones((currOpenMilestones) => !currOpenMilestones);
   };
 
   const addMilestone = (name) => {
-    milestones.push({
-      milestoneId: null,
-      name: name,
-      teamName: null,
-      projectId: projectId,
-    });
-    console.log(milestones);
+    console.log("Dodano nowy kamień milowy:" + name);
+    //call
   };
 
   const handleAddProject = () => {
-    setOpenAddProject(!openAddProject);
+    setOpenAddProject((currOpenAddProject) => !currOpenAddProject);
   };
 
   const addProject = (name) => {
-    projects.push({
-      projectId: null,
-      name: name,
-    });
+    console.log("Dodano nowy projekt:" + name);
+    //call api
   };
 
   return (
@@ -75,7 +71,6 @@ const Projects = (props) => {
         <ListOfMilestones
           update={addMilestone}
           user={props.user}
-          view={2}
           milestones={milestones}
         />
       ) : (
@@ -86,6 +81,9 @@ const Projects = (props) => {
                 <TableRow>
                   <TableCell>
                     <b>Nazwa projektu</b>
+                  </TableCell>
+                  <TableCell align="left">
+                    <b></b>
                   </TableCell>
                   <TableCell align="left">
                     <b></b>
@@ -107,6 +105,15 @@ const Projects = (props) => {
                       >
                         Wyświetl kamienie milowe
                       </Button>
+                    </TableCell>
+                    <TableCell align="left">
+                      {props.user.jobId === 1 ? (
+                        <Button onClick={endProject.bind(this, row.projectId)}>
+                          Zakończ projekt
+                        </Button>
+                      ) : (
+                        " "
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}

@@ -71,10 +71,7 @@ const milestones = [
     name: "Strona klienta",
   },
 ];
-/*
-  Do <AddEmployeeForm> musisz podpiąć array z użytkownikami którzy nie mająprzypisanego zespołu
-  Do <RemoveEmployeeForm> array członków zespołu
-*/
+
 const Teams = (props) => {
   const [user] = useState(props.user);
   const [teamsList, setTeamsList] = useState(teams);
@@ -85,7 +82,9 @@ const Teams = (props) => {
   const [openMilestonesForm, setOpenMilestonesForm] = useState(false);
 
   const removeTeam = (id) => {
-    setTeamsList(teamsList.filter((team) => team.teamId !== id));
+    setTeamsList((currTeamsList) =>
+      currTeamsList.filter((team) => team.teamId !== id)
+    );
     //call api
   };
 
@@ -96,33 +95,35 @@ const Teams = (props) => {
   const closeAddTeamForm = (teamName, id) => {
     setOpenAddTeam(false);
     //call api
-    //dodałem id wybranego team leadera
-    console.log("nazwa: " + teamName + "\n" + "id: " + id);
-    setTeamsList([...teamsList, { teamId: nextId(), name: teamName, id }]);
+    //console.log("nazwa: " + teamName + "\n" + "id: " + id);
+    setTeamsList((currTeamsList) => [
+      ...currTeamsList,
+      { teamId: nextId(), name: teamName, id },
+    ]);
   };
 
   const handleAddEmployeeForm = (id) => {
-    setOpenAddEmployee(!openAddEmployee);
+    setOpenAddEmployee((currOpenAddEmployee) => !currOpenAddEmployee);
     setSelectedTeamId(id);
   };
 
   const handleRemoveEmployeeForm = (id) => {
-    setOpenRemoveEmployee(!openRemoveEmployee);
+    setOpenRemoveEmployee((currOpenRemoveEmployee) => !currOpenRemoveEmployee);
     setSelectedTeamId(id);
   };
 
   const handleMilestonesForm = (id) => {
-    setOpenMilestonesForm(!openMilestonesForm);
+    setOpenMilestonesForm((currOpenMilestonesForm) => !currOpenMilestonesForm);
     setSelectedTeamId(id);
   };
 
+  //remove selected employees from the team
   const removeEmployees = (teamId, ids) => {
-    //usuwanie zaznaczonych pracowników z zespołu
     //call api
   };
 
+  //add selected employees to the team
   const addEmployees = (teamId, ids) => {
-    //dodawanie zaznaczonych pracowników do zespołu
     //call api
   };
 

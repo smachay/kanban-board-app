@@ -43,25 +43,25 @@ const dividerStyle = {
   alignSelf: "center",
 };
 
-const drawerStyle = {
-  flexShrink: 0,
-  width: 300,
-  height: "95vh",
-  margin: "2.5vh 10px 0px 10px",
-
-  "& .MuiDrawer-paper": {
-    //backgroundColor:"#e1e5f2",
-    marginTop: "2.5vh",
-    width: 300,
-    height: "95vh",
-    borderRadius: "10px",
-  },
-};
-
 const Sidebar = (props) => {
   const [listType, setListType] = useState(0);
-  const [jobTitle, setJobTitle] = useState(" ");
+  const [jobTitle, setJobTitle] = useState("");
   const navigate = useNavigate();
+
+  const drawerStyle = {
+    flexShrink: 0,
+    width: props.open === true ? 300 : 0,
+
+    height: "100vh",
+    marginRight: "10px",
+    transition: "1s",
+    "& .MuiDrawer-paper": {
+      width: 300,
+      left: props.open === true ? "0%" : "-100%",
+      height: "100vh",
+      transition: "1.5s",
+    },
+  };
 
   //type is used to filter list items
   const itemsList = [
@@ -90,33 +90,22 @@ const Sidebar = (props) => {
       path: "/dashboard/zespol",
     },
   ];
-  //setting type of list that will be rendered on a sidebar
+
+  const jobTitles = {
+    1: "Menedżer",
+    2: "Team leader",
+    3: "Programista",
+    4: "Tester",
+  };
+  //setting type of list that will be rendered on the sidebar
   useEffect(() => {
-    switch (props.user.jobId) {
-      case 1:
-        setJobTitle("Menedżer");
-        setListType(1);
-        break;
-      case 2:
-        setJobTitle("Team leader");
-        setListType(2);
-        break;
-      case 3:
-        setJobTitle("Programista");
-        setListType(2);
-        break;
-      case 4:
-        setJobTitle("Tester");
-        setListType(2);
-        break;
-      default:
-        break;
-    }
+    setJobTitle(jobTitles[props.user.jobId]);
+    props.user.jobId === 1 ? setListType(1) : setListType(2);
   });
 
   return (
     <Box sx={containerStyle}>
-      <Drawer sx={drawerStyle} variant="permanent" anchor="none">
+      <Drawer sx={drawerStyle} variant="permanent">
         <Avatar src={Logo} variant="square" style={logoStyle} />
         <Divider style={dividerStyle} flexItem={true} />
         <Grid container>
@@ -134,7 +123,7 @@ const Sidebar = (props) => {
           </Grid>
         </Grid>
         <Divider style={dividerStyle} flexItem />
-        <List disablePadding fullWidth>
+        <List disablePadding>
           {itemsList
             .filter((item) => item.type == listType || item.type == 0)
             .map((obj) => {
@@ -152,46 +141,9 @@ const Sidebar = (props) => {
               );
             })}
         </List>
-        {console.log(listType)}
       </Drawer>
     </Box>
   );
 };
 
 export default Sidebar;
-
-/*<Box sx={containerStyle}>
-
-        
-    </Box>
-
-<Grid>
-            <Paper elevation={5} style={paperStyle}>
-                <Grid style={gridStyle} align="center">
-                    <Avatar 
-                        src={Logo}
-                        variant="square"
-                        style={logoStyle}
-                    />
-                    <Divider style={dividerStyle}/>
-                    <Grid container>
-                        <Grid xs={4} item>
-                            <Avatar>
-                                SM
-                            </Avatar>
-                        </Grid>
-                        <Grid xs={8} align='left' item>
-                            <Typography  component="h2">
-                                Stefan Machay
-                            </Typography>
-                            <Typography  fontSize={12}>
-                                Programista
-                            </Typography>
-                        </Grid>   
-                    </Grid>
-                    <Divider style={dividerStyle}/>
-                    
-                </Grid>
-            </Paper>
-        </Grid>
-        */

@@ -14,7 +14,7 @@ const team = [
 const Team = (props) => {
   /*
     get team members from db
-    */
+  */
 
   return <ListOfEmployees user={props.user} employees={team} />;
 };

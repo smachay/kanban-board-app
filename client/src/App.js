@@ -5,12 +5,12 @@ import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const appStyle = {
-  minHeight: "100vh",
-  minWidth: "100vh",
+  height: "100vh",
   backgroundImage: `url(${Image})`,
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
-  backgroundAttachment: "fixed",
+  //backgroundAttachment: "fixed",
+  backgroundPosition: "center",
 };
 
 function App() {

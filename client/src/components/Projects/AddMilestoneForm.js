@@ -3,26 +3,21 @@ import {
   Button,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
   Typography,
   TextField,
-  Select,
-  InputLabel,
-  MenuItem,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 export const AddMilestoneForm = (props) => {
   const [name, setName] = useState(" ");
 
-  const handleClose = () => {
-    props.close(name);
-  };
-
-  const addMilestone = () => {
+  const handleClose = (option) => {
     //passing new milestone name to the parent component
-    handleClose();
+    if (option === "close") {
+      props.close(" ");
+    } else if (option === "add") {
+      props.close(name);
+    }
   };
 
   return (
@@ -50,8 +45,10 @@ export const AddMilestoneForm = (props) => {
           justifyContent: "center",
         }}
       >
-        <Button onClick={addMilestone}>Dodaj nowy kamień milowy</Button>
-        <Button onClick={handleClose}>Anuluj</Button>
+        <Button onClick={handleClose.bind(this, "add")}>
+          Dodaj nowy kamień milowy
+        </Button>
+        <Button onClick={handleClose.bind(this, "close")}>Anuluj</Button>
       </DialogActions>
     </Dialog>
   );

@@ -3,7 +3,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  TextField,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -16,7 +15,7 @@ const RemoveEmployeeForm = (props) => {
     props.close();
   };
 
-  //receives id list from list component and sends it to parent component
+  //function receives id list from list component and sends it to parent component
   const handleChildCallback = (ids) => {
     setListOfIds(ids);
   };
@@ -41,7 +40,7 @@ const RemoveEmployeeForm = (props) => {
         </Typography>
         <ListOfEmployees
           user={props.user}
-          view={1}
+          view="form_employee_info"
           employees={props.employees}
           onChange={handleChildCallback}
         />

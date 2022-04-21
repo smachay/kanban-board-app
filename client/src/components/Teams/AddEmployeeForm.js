@@ -40,7 +40,7 @@ export const AddEmployeeForm = (props) => {
         </Typography>
         <ListOfEmployees
           user={props.user}
-          view={1}
+          view="form_employee_info"
           employees={props.employees}
           onChange={handleChildCallback}
         />

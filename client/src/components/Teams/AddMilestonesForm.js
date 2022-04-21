@@ -40,7 +40,7 @@ const AddMilestonesForm = (props) => {
         </Typography>
         <ListOfMilestones
           user={props.user}
-          view={1}
+          view={"add_milestones_form"}
           milestones={props.milestones}
           onChange={handleChildCallback}
         />

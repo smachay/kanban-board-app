@@ -3,18 +3,16 @@ import {
   Button,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
   Typography,
   TextField,
   Select,
   InputLabel,
   MenuItem,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 export const AddTeamForm = (props) => {
-  const [name, setName] = useState(" ");
+  const [name, setName] = useState("");
   const [id, setId] = useState(0);
 
   const handleClose = () => {
@@ -50,7 +48,7 @@ export const AddTeamForm = (props) => {
         <InputLabel>Team leader</InputLabel>
         <Select label="Team leader" onChange={handleChange}>
           {props.teamLeaders.map((row) => (
-            <MenuItem value={row.employeeId}>
+            <MenuItem key={row.employeeId} value={row.employeeId}>
               {row.firstName} {row.lastName}
             </MenuItem>
           ))}
